@@ -1,0 +1,13 @@
+<md-toolbar md-scroll-shrink ng-if="true" class="md-tall md-primary md-hue-2" layout-align="center center">
+    <div class="md-toolbar-tools">
+        <span flex><h3>Administración</h3></span>
+    </div>
+</md-toolbar>
+<md-content flex>
+    <md-list>
+        <md-list-item ng-repeat="module in modules" ui-sref="{{module.state}}" class="noright">
+            <p>{{ module.name }}</p>
+            <span>{{module.total}}</span>
+        </md-list-item>
+    </md-list>
+</md-content>

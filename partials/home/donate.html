@@ -1,0 +1,52 @@
+<menu-sidebar-left></menu-sidebar-left>
+<div layout="column" flex ng-cloak>
+    <md-toolbar layout="row" id="subHeader" layout-padding>
+        <md-button ng-click="toggleLeft()" class="md-icon-button" hide-gt-sm aria-label="Settings" ng-disabled="false">
+            <md-icon style="color: white" aria-label="hey" class="material-icons step">menu</md-icon>
+        </md-button>
+        <div flex><h4>Acopio en Bici - Donar</h4></div>
+        <div hide-sm hide-xs menu-links></div>
+    </md-toolbar>
+    <md-content flex layout="column" class="md-padding">
+        <md-toolbar class="md-padding" style="background: rgba(0,0,0,0.7);">
+            Llenar formulario para donar
+        </md-toolbar>
+        <form name="donateForm" novalidate class="md-padding">
+            <md-input-container class="md-block" flex>
+                <label>Nombre</label>
+                <input name="name" type="text" ng-model="donator.name" required />
+            </md-input-container>
+            <md-input-container class="md-block" flex>
+                <label>Información de contacto</label>
+                <input name="contactInfo" type="text" ng-model="donator.contactInfo" placeholder="twitter, email o teléfono" />
+            </md-input-container>
+            <md-input-container class="md-block" flex>
+                <label>Tamaño en mochilas estandar aproximadas</label>
+                <input name="sizeOfBag" type="text" ng-model="donator.sizeOfBag" required>
+            </md-input-container>
+            <md-input-container class="md-block" flex>
+                <label>Categorías de donaciones</label>
+                <md-select name="categoryOfDonations" ng-model="donator.categoryOfDonations" required>
+                    <md-option value="water">Agua</md-option>
+                    <md-option value="food">Comida</md-option>
+                    <md-option value="medicine">Medicinas</md-option>
+                    <md-option value="serum">Suero</md-option>
+                    <md-option value="batteries">Baterias</md-option>
+                </md-select>
+            </md-input-container>
+            <md-input-container class="md-block" flex>
+                <label>Horario en el que se puede recoger</label>
+                <input name="deliverSchedule" type="text" ng-model="donator.deliverSchedule" placeholder="ej: entre 4:00 pm y 7:00 pm" />
+            </md-input-container>
+            <h5>Mi ubicación exacta (permitir recoger ubicación)</h5>
+            <div id="map">MAPA</div>
+            <br>
+            <div layour="row">
+                <div flex></div>
+                <md-button ng-disabled="donateForm.$invalid" class="md-primary md-fab" ng-click="save()">
+                    <md-icon>save</md-icon>
+                </md-button>
+            </div>
+        </form>
+    </md-content>
+</div>

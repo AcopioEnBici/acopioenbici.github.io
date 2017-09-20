@@ -1,0 +1,15 @@
+<div layout="row">
+    <div flex class="overflowHidden">
+        <md-input-container md-no-float layout-fill ng-init="search = ''">
+            <md-icon for="#search" class="material-icons bolder" ng-show="search == ''" class="md-avatar md-margin">search</md-icon>
+            <input id="search" ng-keyup="($event.keyCode == 27) ? search = '' : return" type="text" ng-model="search" placeholder="Buscar">
+            <md-icon class="material-icons bolder" ng-show="search !== ''" class="md-avatar md-margin" ng-click="search = ''">
+                close
+            </md-icon>
+        </md-input-container>
+    </div>
+    <div flex="nogrow">
+        <md-checkbox class="md-secondary md-block align-right" aria-label="Selecciona Todos" ng-click="toggleSelectAll(objects)"></md-checkbox>
+        <md-icon class="material-icons bolder align-right" ng-class="{'purpleC':allSelected}" class="md-avatar md-margin">done_all</md-icon>
+    </div>
+</div>

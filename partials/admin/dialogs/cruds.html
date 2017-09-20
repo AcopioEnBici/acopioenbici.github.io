@@ -1,0 +1,96 @@
+<md-dialog aria-label="Mango (Fruit)">
+    <form name="crudForm" novalidate class="niceForm">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>{{action}} Crud</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon style="color: white" class="material-icons step">
+                        close
+                    </md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <md-tabs md-dynamic-height md-border-bottom md-dynamic-width>
+                <md-tab label="INFO" layout="row" ng-click="uploadImage = false">
+                    <md-content flex="100" class="md-padding">
+                        <div layout="column">
+                            <md-input-container flex-gt-sm class="md-icon-float md-block">
+                                <!-- Use floating label instead of placeholder -->
+                                <label>Nombre de la Crud</label>
+                                <md-icon style="color:red" class="material-icons step">place</md-icon>
+                                <input ng-model="crud.name" type="text" ng-required="true">
+                            </md-input-container>
+                        </div>
+                    </md-content>
+                </md-tab>
+                <md-tab label="IMAGENES" ng-click="uploadImage = true">
+                    <md-content class="md-padding">
+                        <div layout-gt-sm="row">
+                            <div flex layout="column" layout-align="top center" layout-padding>
+                                <span>Logo</span>
+                                <a target="_blanc" ng-href="{{crud.images.logo}}" ng-if="crud.images.logo">
+                                    <img class="contained h100" ng-src="{{crud.images.logo}}" alt="Portada">
+                                </a>
+                                <lf-ng-md-file-input 
+                                    ng-show="!crud.images.logo" 
+                                    name="logo" 
+                                    lf-files="logo" 
+                                    lf-image-dimensions="logoDimensions"
+                                    lf-placeholder="300px X 300px ~ 1MB" 
+                                    preview 
+                                    progress 
+                                    lf-browse-label="Buscar" 
+                                    lf-remove-label="X"
+                                    lf-filesize="1MB" 
+                                    accept="image/*" 
+                                    lf-mimetype="image/*"
+                                    lf-drag-and-drop-label="300px X 300px ~ 1MB"></lf-ng-md-file-input>
+                                <ng-messages for="crudForm.logo.$error" style="color:red;">
+                                    <ng-message when="required">Imagen es requerida.</ng-message>
+                                    <ng-message when="filesize">Archivo demaciado grande.</ng-message>
+                                    <ng-message when="mimetype">Tipo de archivo erroneo.</ng-message>
+                                </ng-messages>
+                                <md-button ng-if="!crud.images.logo" ng-disabled="!logo.length" class="md-raised md-primary" ng-click="upload(logo, 'logo', crud)">
+                                    <md-icon class="material-icons step">
+                                        file_upload
+                                    </md-icon> 
+                                    Subir
+                                </md-button>
+                                <md-button ng-if="crud.images.logo" class="md-raised md-warn" ng-click="removeUpload(crud, 'logo')">
+                                    <md-icon class="material-icons step">
+                                        delete
+                                    </md-icon>
+                                    Borrar
+                                </md-button>
+                            </div>
+                        </div>
+                    </md-content>
+                </md-tab>
+                <md-tab label="CONFIG" ng-click="uploadImage = false">
+                    <md-content class="md-padding">
+                        <md-list>
+                            <md-list-item>
+                                <md-icon style="color:red" class="material-icons step">place</md-icon>
+                                <p> Activo </p>
+                                <md-switch class="md-secondary" ng-model="crud.active"></md-switch>
+                            </md-list-item>
+                        </md-list>
+                    </md-content>
+                </md-tab>
+            </md-tabs>
+        </md-dialog-content>
+        <md-dialog-actions layout="row" layout-align="center center">
+            <md-button ng-if="newItem && !uploadImage" ng-click="add(crud)" md-autofocus ng-disabled="crudForm.$invalid" class="md-accent md-hue-2">
+                <md-icon class="material-icons step">save</md-icon>
+            </md-button>
+            <md-button ng-if="!newItem && !uploadImage" ng-click="save(crud)" md-autofocus ng-disabled="crudForm.$invalid" class="md-primary">
+                <md-icon style="color: green" class="material-icons step">save</md-icon>
+            </md-button>
+            <!--<md-button ng-if="uploadImage" ng-click="upload()" md-autofocus ng-disabled="!files.length" class="md-primary">
+                <md-icon style="color: orange" class="material-icons step">save</md-icon>
+            </md-button>-->
+        </md-dialog-actions>
+    </form>
+</md-dialog>

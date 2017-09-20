@@ -1,0 +1,38 @@
+<md-toolbar md-scroll-shrink ng-if="true" class="md-primary md-hue-2" layout-align="center center">
+        <div class="md-toolbar-tools">
+            <span flex><h3>Registro</h3></span>
+            <md-button ui-sref="home" class="md-fab md-primary md-raised md-mini" aria-label="Back">
+                <md-icon aria-label="Regresar a Inicio" class="material-icons bolder">
+                    keyboard_backspace
+                </md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-content flex layout-align="center center" layout-padding id="loginPanel">
+        <div layout="row" layout-align="center center">
+            <div md-whiteframe="3" layout="column">
+                <md-toolbar class="md-padding" style="background: rgba(0,0,0,0.7);">
+                    Registro de Staff
+                </md-toolbar>
+                <form name="adminForm" novalidate class="md-padding niceForm">
+                    <div layout="column" layout-align="top center">
+                        <md-input-container class="md-block" flex>
+                            <label>Email</label>
+                            <input name="email" ng-model="admin.email" type="email" required minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/" />
+                            <div class="hint" ng-show="showHints">Correo Incorrecto</div>
+                            <div ng-messages="adminForm.email.$error" ng-hide="showHints">
+                                <div ng-if="adminForm.email.$dirty && adminForm.email.$error" ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
+                                    Su correo debe tener entre 10 y 100 caracteres y tener formato de e-mail.
+                                </div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container class="md-block" flex>
+                            <label>Password</label>
+                            <input name="password" ng-model="admin.password" type="password" required minlength="6" maxlength="20" />
+                        </md-input-container>
+                        <md-button ng-disabled="adminForm.$invalid" class="md-primary md-raised centered" ng-click="register()">Registrarme</md-button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </md-content>

@@ -1,0 +1,53 @@
+<md-toolbar md-scroll-shrink ng-if="true" class="md-tall md-primary md-hue-2" md-whiteframe="1" layout-align="center center">
+        <div class="md-toolbar-tools">
+            <span flex><h3>Voluntarios</h3></span>
+            <md-button ng-if="F.somethingIsSelected(volunteers)" ng-click="showRemoveDialog($event)" class="md-fab md-mini md-warn md-raised md-hue-2"
+                aria-label="Remove">
+                <md-icon aria-label="Borrar Crud" class="material-icons bolder">
+                    delete
+                </md-icon>
+            </md-button>
+            <md-button ng-click="showAddDialog($event)" class="md-fab md-primary md-raised" aria-label="Add" ng-disabled="false">
+                <md-icon aria-label="Agregar Crud" class="material-icons bolder">
+                    add
+                </md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-content flex>
+        <md-subheader>
+            <div search-objects-bar search="search" objects="volunteers"></div>
+        </md-subheader>
+        <md-table-container>
+            <table md-table>
+                <thead md-head>
+                    <tr md-row>
+                        <th md-column md-order-by='date'>Fecha</th>
+                        <th md-column md-order-by='name'>Nombre</th>
+                        <th md-column md-order-by='capacity'>Capacidad de Mochila</th>
+                        <th md-column md-order-by='active'>Activo</th>
+                        <th md-column>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody md-body>
+                    <tr md-row ng-repeat="volunteer in (filteredItems = (volunteers | filter:search | orderBy:'date'))" ng-click="showSaveDialog($event, donation)"
+                        class="noright">
+                        <td md-cell>{{volunteer.date | date: 'dd/MM/YYYY HH:mm'}}</td>
+                        <td md-cell>{{volunteer.name}}</td>
+                        <td md-cell>{{volunteer.capacity}}</td>
+                        <td md-cell>{{volunteer.active ? 'Si' : 'No'}}</td>
+                        <td md-cell>
+                            <md-button ng-show='!volunteer.active' class="md-primary md-mini md-fav" ng-click="activate(volunteer)">
+                                <md-tooltip md-direction="left">Activar</md-tooltip>
+                                <md-icon>check</md-icon>
+                            </md-button>
+                            <md-button ng-show='volunteer.active' class="md-warn md-mini md-fav" ng-click="deactivate(volunteer)">
+                                <md-tooltip md-direction="left">Desactivar</md-tooltip>
+                                <md-icon>close</md-icon>
+                            </md-button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </md-list>
+    </md-content>

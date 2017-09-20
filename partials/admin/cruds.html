@@ -1,0 +1,39 @@
+<md-toolbar md-scroll-shrink ng-if="true" class="md-tall md-primary md-hue-2" md-whiteframe="1" layout-align="center center">
+    <div class="md-toolbar-tools">
+        <span flex><h3>Cruds</h3></span>
+        <md-button ng-if="F.somethingIsSelected(cruds)" ng-click="showRemoveDialog($event)" class="md-fab md-mini md-warn md-raised md-hue-2" aria-label="Remove">
+            <md-icon aria-label="Borrar Crud" class="material-icons bolder">
+                delete
+            </md-icon>
+        </md-button>
+        <md-button ng-click="showAddDialog($event)" class="md-fab md-primary md-raised" aria-label="Add" ng-disabled="false">
+            <md-icon aria-label="Agregar Crud" class="material-icons bolder">
+                add
+            </md-icon>
+        </md-button>
+    </div>
+</md-toolbar>
+<md-content flex>
+    <md-list>
+        <md-subheader>
+            <div search-objects-bar search="search" objects="cruds"></div>
+        </md-subheader>
+        <md-list-item ng-repeat="crud in (filteredItems = (cruds | filter:search | orderBy:'active'))" ng-click="showSaveDialog($event, crud)" class="noright" ng-class="{'disabled': !crud.active}">
+            <img ng-if="crud.images.logo" alt="{{ crud.name }}" ng-src="{{ crud.images.logo}}" class="md-avatar" />
+            <md-icon ng-if="!crud.images.logo" aria-label="crud logo" class="material-icons bolder" class="md-avatar">
+                photo
+            </md-icon>
+            <span>{{ crud.name }}</span>
+            <span flex></span>
+            
+            <md-checkbox class="md-secondary" ng-model="crud.selected"></md-checkbox>
+        </md-list-item>
+        <md-subheader>
+            <div layout="row">
+                <div flex>
+                    <span class="md-block">Mostrando {{filteredItems.length}} de {{F.counter.cruds}} Cruds</span>
+                </div>
+            </div>
+        </md-subheader>
+    </md-list>
+</md-content>

@@ -1,0 +1,57 @@
+<md-toolbar md-scroll-shrink ng-if="true" class="md-tall md-primary md-hue-2" md-whiteframe="1" layout-align="center center">
+    <div class="md-toolbar-tools">
+        <span flex><h3>Donaciones</h3></span>
+        <md-button ng-if="F.somethingIsSelected(donations)" ng-click="showRemoveDialog($event)" class="md-fab md-mini md-warn md-raised md-hue-2"
+            aria-label="Remove">
+            <md-icon aria-label="Borrar Crud" class="material-icons bolder">
+                delete
+            </md-icon>
+        </md-button>
+        <md-button ng-click="showAddDialog($event)" class="md-fab md-primary md-raised" aria-label="Add" ng-disabled="false">
+            <md-icon aria-label="Agregar Crud" class="material-icons bolder">
+                add
+            </md-icon>
+        </md-button>
+    </div>
+</md-toolbar>
+<md-content flex>
+    <md-subheader>
+        <div search-objects-bar search="search" objects="donations"></div>
+    </md-subheader>
+    <md-table-container>
+        <table md-table>
+            <thead md-head>
+                <tr md-row>
+                    <th md-column md-order-by='date'>Fecha</th>
+                    <th md-column md-order-by='name'>Donador</th>
+                    <th md-column md-order-by='categoryOfDonations'>Categoría</th>
+                    <th md-column md-order-by='sizeOfBag'>Tamaño de Mochila</th>
+                    <th md-column md-order-by='contactInfo'>Info de Contacto</th>
+                    <th md-column md-order-by='pickedUp'>Recogido</th>
+                    <th md-column>Acciones</th>
+                </tr>
+            </thead>
+            <tbody md-body>
+                <tr md-row ng-repeat="donation in (filteredItems = (donations | filter:search | orderBy:'date'))" ng-click="showSaveDialog($event, donation)"
+                    class="noright" ng-class="{'disabled': donation.pickedUp}">
+                    <td md-cell>{{donation.date | date: 'dd/MM/YYYY HH:mm'}}</td>
+                    <td md-cell>{{donation.name}}</td>
+                    <td md-cell>{{donation.categoryOfDonations}}</td>
+                    <td md-cell>{{donation.sizeOfBag}}</td>
+                    <td md-cell>{{donation.contactInfo}}</td>
+                    <td md-cell>{{donation.pickedUp ? 'Si' : 'No'}}</td>
+                    <th md-cell>
+                        <md-button ng-show='!donation.pickedUp' class="md-primary md-mini md-fav" ng-click="pickup(donation)">
+                            <md-tooltip md-direction="left">Recoger</md-tooltip>
+                            <md-icon>check</md-icon>
+                        </md-button>
+                        <md-button ng-show='donation.pickedUp' class="md-primary md-mini md-fav" ng-click="cancelPickup(donation)">
+                            <md-tooltip md-direction="left">Cancelar</md-tooltip>
+                            <md-icon>close</md-icon>
+                        </md-button>
+                    </th>
+                </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+</md-content>

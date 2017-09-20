@@ -1,0 +1,141 @@
+<md-dialog aria-label="Mango (Fruit)">
+    <form name="drugstoreForm" novalidate class="niceForm">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>{{action}} Farmacia</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon style="color: white" class="material-icons step">
+                        close
+                    </md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <md-tabs md-dynamic-height md-border-bottom md-dynamic-width>
+                <md-tab label="INFO" layout="row" ng-click="uploadImage = false">
+                    <md-content flex="100" class="md-padding">
+                        <div layout="column">
+                            <md-input-container flex-gt-sm class="md-icon-float md-block">
+                                <!-- Use floating label instead of placeholder -->
+                                <label>Nombre de la Farmacia</label>
+                                <md-icon style="color:red" class="material-icons step">place</md-icon>
+                                <input ng-model="drugstore.name" type="text" ng-required="true">
+                            </md-input-container>
+                            <md-input-container flex-gt-sm md-no-float class="md-block">
+                                <label>url de Facebook</label>
+                                <md-icon class="md-accent md-hue-2" md-svg-src="images/iconos/facebook.svg"></md-icon>
+                                <input ng-model="drugstore.fbUrl" type="url" placeholder="ex. https://www.facebook.com/tu.desarrollo.web/">
+                            </md-input-container>
+                            <md-input-container flex-gt-sm md-no-float class="md-block">
+                                <label>url de Twitter</label>
+                                <md-icon class="md-primary" md-svg-src="images/iconos/twitter.svg"></md-icon>
+                                <input ng-model="drugstore.twUrl" type="url" placeholder="ex. https://twitter.com/ceacatl_">
+                            </md-input-container>
+                        </div>
+                    </md-content>
+                </md-tab>
+                <md-tab label="IMAGENES" ng-click="uploadImage = true">
+                    <md-content class="md-padding">
+                        <div layout-gt-sm="row">
+                            <div flex layout="column" layout-align="top center" layout-padding>
+                                <span>Portada</span>
+                                <a target="_blanc" ng-href="{{drugstore.images.portada}}" ng-if="drugstore.images.portada">
+                                    <img class="contained h100" ng-src="{{drugstore.images.portada}}" alt="Portada">
+                                </a>
+                                <lf-ng-md-file-input 
+                                    ng-show="!drugstore.images.portada" 
+                                    name="portada" 
+                                    lf-files="portada" 
+                                    lf-placeholder="600px X 300px ~ 2MB" 
+                                    preview 
+                                    progress 
+                                    lf-filesize="2MB" 
+                                    accept="image/*" 
+                                    lf-browse-label="Buscar" 
+                                    lf-remove-label="X"
+                                    lf-mimetype="image/*"
+                                    lf-drag-and-drop-label="600px X 300px ~ 2MB"></lf-ng-md-file-input>
+                                <ng-messages for="drugstoreForm.portada.$error" style="color:red;" role="alert">
+                                    <ng-message when="filesize">Archivo demaciado grande.</ng-message>
+                                    <ng-message when="mimetype">Tipo de archivo erroneo.</ng-message>
+                                </ng-messages>
+                                <md-button ng-if="!drugstore.images.portada" ng-disabled="drugstoreForm.portada.$invalid" class="md-primary md-raised" ng-click="upload(portada, 'portada', drugstore)">
+                                    <md-icon class="material-icons step">
+                                        file_upload
+                                    </md-icon>
+                                    Subir
+                                </md-button>
+                                <md-button ng-if="drugstore.images.portada" class="md-warn md-raised" ng-click="removeUpload(drugstore, 'portada')">
+                                    <md-icon class="material-icons step">
+                                        delete
+                                    </md-icon>
+                                    Borrar
+                                </md-button>
+                            </div>
+                            <div flex layout="column" layout-align="top center" layout-padding>
+                                <span>Logo</span>
+                                <a target="_blanc" ng-href="{{drugstore.images.logo}}" ng-if="drugstore.images.logo">
+                                    <img class="contained h100" ng-src="{{drugstore.images.logo}}" alt="Portada">
+                                </a>
+                                <lf-ng-md-file-input 
+                                    ng-show="!drugstore.images.logo" 
+                                    name="logo" 
+                                    lf-files="logo" 
+                                    lf-image-dimensions="logoDimensions"
+                                    lf-placeholder="300px X 300px ~ 1MB" 
+                                    preview 
+                                    progress 
+                                    lf-browse-label="Buscar" 
+                                    lf-remove-label="X"
+                                    lf-filesize="1MB" 
+                                    accept="image/*" 
+                                    lf-mimetype="image/*"
+                                    lf-drag-and-drop-label="300px X 300px ~ 1MB"></lf-ng-md-file-input>
+                                <ng-messages for="drugstoreForm.logo.$error" style="color:red;">
+                                    <ng-message when="required">Imagen es requerida.</ng-message>
+                                    <ng-message when="filesize">Archivo demaciado grande.</ng-message>
+                                    <ng-message when="mimetype">Tipo de archivo erroneo.</ng-message>
+                                </ng-messages>
+                                <md-button ng-if="!drugstore.images.logo" ng-disabled="!logo.length" class="md-raised md-primary" ng-click="upload(logo, 'logo', drugstore)">
+                                    <md-icon class="material-icons step">
+                                        file_upload
+                                    </md-icon> 
+                                    Subir
+                                </md-button>
+                                <md-button ng-if="drugstore.images.logo" class="md-raised md-warn" ng-click="removeUpload(drugstore, 'logo')">
+                                    <md-icon class="material-icons step">
+                                        delete
+                                    </md-icon>
+                                    Borrar
+                                </md-button>
+                            </div>
+                        </div>
+                    </md-content>
+                </md-tab>
+                <md-tab label="CONFIG" ng-click="uploadImage = false">
+                    <md-content class="md-padding">
+                        <md-list>
+                            <md-list-item>
+                                <md-icon style="color:red" class="material-icons step">place</md-icon>
+                                <p> Activo </p>
+                                <md-switch class="md-secondary" ng-model="drugstore.active"></md-switch>
+                            </md-list-item>
+                        </md-list>
+                    </md-content>
+                </md-tab>
+            </md-tabs>
+        </md-dialog-content>
+        <md-dialog-actions layout="row" layout-align="center center">
+            <md-button ng-if="newItem && !uploadImage" ng-click="add(drugstore)" md-autofocus ng-disabled="drugstoreForm.$invalid" class="md-accent md-hue-2">
+                <md-icon class="material-icons step">save</md-icon>
+            </md-button>
+            <md-button ng-if="!newItem && !uploadImage" ng-click="save(drugstore)" md-autofocus ng-disabled="drugstoreForm.$invalid" class="md-primary">
+                <md-icon style="color: green" class="material-icons step">save</md-icon>
+            </md-button>
+            <!--<md-button ng-if="uploadImage" ng-click="upload()" md-autofocus ng-disabled="!files.length" class="md-primary">
+                <md-icon style="color: orange" class="material-icons step">save</md-icon>
+            </md-button>-->
+        </md-dialog-actions>
+    </form>
+</md-dialog>

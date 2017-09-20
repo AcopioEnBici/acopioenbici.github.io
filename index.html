@@ -1,0 +1,54 @@
+<!doctype html>
+<html class="no-js" ng-app="app">
+
+<head>
+    <meta charset="utf-8">
+    <!--<base href="/apps/clients/zaraya-apps/afich/app/">-->
+    <base href="/">
+    <title>Acopio en Bici</title>
+    <meta name="description" content="sitio de ayuda y donaciones para temblor CDMX 2017, acopio en bici">
+    <meta name="viewport" content="width=device-width">
+    <!--<link rel="icon" href="favicon.png" sizes="16x16" type="image/png">-->
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+    <!-- build:css({.tmp,app}) styles/main.css -->
+    <link rel="stylesheet" href="css/required.min.css">
+    <link rel="stylesheet" href="css/styles.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Reem+Kufi" rel="stylesheet">
+    <!-- endbuild -->
+    <script src="js/required.min.js"></script>
+</head>
+
+<body ng-controller="GeneralCtrl">
+    <!--[if lt IE 10]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    <div class="splash" ng-cloak>
+        <img src="/images/heart.svg" height="200">
+    </div>
+
+
+    <div ui-view layout-fill layout="row" ng-controller="MenuCtrl" ng-cloak></div>
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+    <script>
+        (function(b, o, i, l, e, r) {
+            b.GoogleAnalyticsObject = l;
+            b[l] || (b[l] =
+                function() {
+                    (b[l].q = b[l].q || []).push(arguments)
+                });
+            b[l].l = +new Date;
+            e = o.createElement(i);
+            r = o.getElementsByTagName(i)[0];
+            e.src = '//www.google-analytics.com/analytics.js';
+            r.parentNode.insertBefore(e, r)
+        }(window, document, 'script', 'ga'));
+        ga('create', 'UA-XXXXX-X');
+        ga('send', 'pageview');
+    </script>
+
+    <script src="js/app.min.js"></script>
+</body>
+
+</html>

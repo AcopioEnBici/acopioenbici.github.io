@@ -1,0 +1,13 @@
+<div class="md-toolbar-tools">
+    <span flex><h3>{{title}}</h3></span>
+    <md-button ng-if="somethingIsSelected()" ng-click="showRemoveDialog($event)" class="md-fab md-mini md-warn md-raised md-hue-2" aria-label="delete">
+        <md-icon aria-label="delete icon" class="material-icons bolder">
+            delete
+        </md-icon>
+    </md-button>
+    <md-button ng-click="showAddDialog($event)" class="md-fab md-primary md-raised" aria-label="add">
+        <md-icon aria-label="add icon" class="material-icons bolder">
+            add
+        </md-icon>
+    </md-button>
+</div>
