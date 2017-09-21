@@ -1,25 +1,25 @@
 <md-toolbar md-scroll-shrink ng-if="true" class="md-tall md-primary md-hue-2" md-whiteframe="1" layout-align="center center">
         <div class="md-toolbar-tools">
             <span flex><h3>Voluntarios</h3></span>
-            <md-button ng-if="F.somethingIsSelected(volunteers)" ng-click="showRemoveDialog($event)" class="md-fab md-mini md-warn md-raised md-hue-2"
+            <md-button ng-if="selected.length" ng-click="showRemoveDialog($event)" class="md-fab md-mini md-warn md-raised md-hue-2"
                 aria-label="Remove">
-                <md-icon aria-label="Borrar Crud" class="material-icons bolder">
+                <md-icon aria-label="Borrar Voluntario" class="material-icons bolder">
                     delete
                 </md-icon>
             </md-button>
-            <md-button ng-click="showAddDialog($event)" class="md-fab md-primary md-raised" aria-label="Add" ng-disabled="false">
+            <!-- <md-button ng-click="showAddDialog($event)" class="md-fab md-primary md-raised" aria-label="Add" ng-disabled="false">
                 <md-icon aria-label="Agregar Crud" class="material-icons bolder">
                     add
                 </md-icon>
-            </md-button>
+            </md-button> -->
         </div>
     </md-toolbar>
     <md-content flex>
         <md-subheader>
-            <div search-objects-bar search="search" objects="volunteers"></div>
+            <div search-objects-bar search="search"></div>
         </md-subheader>
         <md-table-container>
-            <table md-table>
+            <table md-table md-row-select ng-model='selected'>
                 <thead md-head>
                     <tr md-row>
                         <th md-column md-order-by='date'>Fecha</th>
@@ -30,8 +30,7 @@
                     </tr>
                 </thead>
                 <tbody md-body>
-                    <tr md-row ng-repeat="volunteer in (filteredItems = (volunteers | filter:search | orderBy:'date'))" ng-click="showSaveDialog($event, donation)"
-                        class="noright">
+                    <tr md-row ng-repeat="volunteer in (filteredItems = (volunteers | filter:search | orderBy:'date')) | limitTo: F.paginate: (currentPage - 1) * F.paginate" md-select='volunteer' md-select-id='$id' class="noright">
                         <td md-cell>{{volunteer.date | date: 'dd/MM/YYYY HH:mm'}}</td>
                         <td md-cell>{{volunteer.name}}</td>
                         <td md-cell>{{volunteer.capacity}}</td>
@@ -49,5 +48,6 @@
                     </tr>
                 </tbody>
             </table>
-        </md-list>
+        </md-table-container>
+        <md-table-pagination md-limit="F.paginate" md-limit-options="[5, 10, 15]" md-page="currentPage" md-total="{{donations.length}}" md-page-select></md-table-pagination>
     </md-content>

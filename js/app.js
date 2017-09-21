@@ -1,7 +1,7 @@
 /**
  * Proyecto: Acopio en Bici
  * Fecha:    19/sept/2017
- * Author:   edgardo@tu-desarrollo.com
+ * Autores:   edgardo@tu-desarrollo.com // pongan aca sus nombres, nicks o correos porfa :D
  */
 
 'use strict';
@@ -10,6 +10,7 @@ angular.module('app', [
     'ngAnimate',
     'ngSanitize',
     'ngMessages',
+    'ngMap',
     'firebase',
     'ui.router',
     'ngMaterial',
@@ -21,6 +22,7 @@ angular.module('app', [
     'slugifier',
     'angularMoment'
 ]);
+
 'use strict';
 
 angular.module("app")
@@ -227,15 +229,18 @@ angular.module('app')
         "$firebaseArray",
         "AppF",
         "$log",
-        function($rootScope, $scope, errAlertS, successAlertS, $firebaseArray, F, $log) {
+        "$mdDialog",
+        function($rootScope, $scope, errAlertS, successAlertS, $firebaseArray, F, $log, $mdDialog) {
             var initiated = false;
             var root = firebase.database().ref("/");
             $scope.donations = [];
+            $scope.currentPage = 1;
+            $scope.selected = [];
 
             var init = function() {
                 initiated = true;
                 // .orderByChild('pickedUp').equalTo(false) 
-                $scope.donations = $firebaseArray(root.child('donators'));
+                $scope.donations = $firebaseArray(root.child('donations'));
                 $log.debug('Donation Ctrl initiated');
             }
 
@@ -258,6 +263,43 @@ angular.module('app')
                 $log.debug('cancel picked up', donation);
                 donation.pickedUp = false;
                 $scope.save(donation);
+            }
+
+            $scope.remove = function(donation){
+                $log.debug("removing: ", donation);
+                return $scope.donations.$remove(donation);
+            }
+
+            $scope.showRemoveDialog = function(ev){
+                $mdDialog.show(
+                    $mdDialog.confirm({
+                        onComplete: function afterShowAnimation() {
+                            var $dialog = angular.element(document.querySelector('md-dialog'));
+                            var $actionsSection = $dialog.find('md-dialog-actions');
+                            var $cancelButton = $actionsSection.children()[0];
+                            var $confirmButton = $actionsSection.children()[1];
+                            angular.element($confirmButton).addClass('md-raised md-warn');
+                            angular.element($cancelButton).addClass('md-raised');
+                        }
+                    })
+                    .title('Remover ' + $scope.selected.length + ' donaciones?')
+                    .textContent('No podrá recuperar los datos')
+                    .ariaLabel('Lucky day')
+                    .targetEvent(event)
+                    .ok('Eliminar')
+                    .cancel('Cancelar')
+                ).then(function() {
+                    var count = 0;
+                    $log.debug("Deleting: ", $scope.selected);
+                    angular.forEach($scope.selected, function(record) {
+                        $scope.remove(record).then(function() {
+                            if (count == $scope.selected.length) {
+                                successAlert("Se borraron " + count + " donaciones");
+                                $scope.selected = [];
+                            }
+                        });
+                    });
+                });
             }
 
             $rootScope.$on('loggedIn', function(event, logged) {
@@ -439,6 +481,8 @@ angular.module('app')
             var initiated = false;
             var root = firebase.database().ref("/");
             $scope.volunteers = [];
+            $scope.currentPage = 1;
+            $scope.selected = [];
 
             var init = function() {
                 initiated = true;
@@ -465,6 +509,43 @@ angular.module('app')
                 $log.debug('deactivate', volunteer);
                 volunteer.active = false;
                 $scope.save(volunteer);
+            }
+
+            $scope.remove = function(volunteer){
+                $log.debug("removing: ", volunteer);
+                return $scope.volunteers.$remove(volunteer);
+            }
+
+            $scope.showRemoveDialog = function(ev){
+                $mdDialog.show(
+                    $mdDialog.confirm({
+                        onComplete: function afterShowAnimation() {
+                            var $dialog = angular.element(document.querySelector('md-dialog'));
+                            var $actionsSection = $dialog.find('md-dialog-actions');
+                            var $cancelButton = $actionsSection.children()[0];
+                            var $confirmButton = $actionsSection.children()[1];
+                            angular.element($confirmButton).addClass('md-raised md-warn');
+                            angular.element($cancelButton).addClass('md-raised');
+                        }
+                    })
+                    .title('Remover ' + $scope.selected.length + ' voluntarios?')
+                    .textContent('No podrá recuperar los datos')
+                    .ariaLabel('Lucky day')
+                    .targetEvent(event)
+                    .ok('Eliminar')
+                    .cancel('Cancelar')
+                ).then(function() {
+                    var count = 0;
+                    $log.debug("Deleting: ", $scope.selected);
+                    angular.forEach($scope.selected, function(record) {
+                        $scope.remove(record).then(function() {
+                            if (count == $scope.selected.length) {
+                                successAlert("Se borraron " + count + " voluntarios");
+                                $scope.selected = [];
+                            }
+                        });
+                    });
+                });
             }
 
             $rootScope.$on('loggedIn', function(event, logged) {
@@ -714,33 +795,39 @@ angular.module('app')
         "$scope",
         "errAlertS",
         "successAlertS",
-        function($rootScope, $scope, errAlertS, successAlertS) {
+        "NgMap",
+        function($rootScope, $scope, errAlertS, successAlertS, NgMap) {
             var initiated = false;
             var root = firebase.database().ref("/");
             $scope.donator = {};
 
             var init = function() {
                 initiated = true;
-                console.log('Donate Ctrl initiated');
+                NgMap.getMap().then(function(map) {
+                  console.log(map.getCenter());
+                  console.log('markers', map.markers);
+                  console.log('shapes', map.shapes);
+                });
             }
 
             $scope.save = function(){
                 console.log('saving', $scope.donator);
                 $scope.donator.createdAt = moment().valueOf();
-                $scope.donator.pickedUp = false;
-                root.child('donators').push($scope.donator).then(function(){
+                $scope.donator.status = 'esperando';
+                root.child('donations').push($scope.donator).then(function(){
                     successAlertS('Gracias por registrarte como donador, en cuanto nos sea posible nos pondremos en contacto contigo');
                 }, errAlertS);
             }
 
             $scope.ubicateMe = function(){
                 console.log('ubicating me');
-                // 
+                //
             }
 
             init();
         }
     ]);
+
 'use strict';
 
 angular.module('app')
@@ -863,11 +950,16 @@ angular.module('app')
         "$state",
         "$q",
         "AppF",
-        function($rootScope, $scope, $log, successAlertS, errAlertS, $firebaseAuth, $state, $q, F) {
+        "$firebaseArray",
+        function($rootScope, $scope, $log, successAlertS, errAlertS, $firebaseAuth, $state, $q, F, $firebaseArray) {
             var initiated = false;
             $scope.volunteer = {};
             var root = firebase.database().ref('/');
             $scope.auth = $firebaseAuth();
+            $scope.distanceFromMe = 10;
+            $scope.distanceForCenters = 100;
+            $scope.selectedDonation = false;
+            $scope.selectedCenter = false;
 
             $scope.save = function(){
                 $log.debug('saving', $scope.volunteer);
@@ -881,6 +973,34 @@ angular.module('app')
 
             $scope.loginWithTwitter = function(){
                 $scope.auth.$signInWithRedirect('twitter').catch(errAlertS);
+            }
+
+            $scope.deliverDonation = function(){
+                $scope.selectedDonation.status = 'entregado';
+                $scope.selectedDonation.deliveredAt = $scope.selectedCenter.$id;
+                $scope.deliveredBy = F.user.uid;
+                $scope.updatedAt = moment().valueOf();
+                $scope.selectedDonation.$save().then(function(){
+                    successAlertS('Gracias!! Se entrego la donación correctamente!');
+                }, errAlertS);
+            }
+
+            $scope.pickupDonation = function(){
+                $scope.selectedDonation.status = 'recogido';
+                // $scope.selectedDonation.deliveredAt = $scope.selectedCenter.$id;
+                $scope.pickedBy = F.user.uid;
+                $scope.updatedAt = moment().valueOf();
+                $scope.selectedDonation.$save().then(function(){
+                    successAlertS('Gracias!! Se entrego la donación correctamente!');
+                }, errAlertS);
+            }
+
+            $scope.cancelPickup = function(){
+                $scope.selectedDonation.status = null;
+                $scope.updatedAt = moment().valueOf();
+                $scope.selectedDonation.$save().then(function(){
+                    successAlertS('Se canceló el acopio de la donación');
+                }, errAlertS);
             }
 
             var checkIfUserExist = function(uid){
@@ -899,8 +1019,24 @@ angular.module('app')
                 return promise.promise;
             }
 
+            var initMap = function(){ 
+                $scope.donationsAvailable = [
+                    { latitude: 67.331, longitude: 56.214 },
+                    { latitude: 67.331, longitude: 56.214 },
+                    { latitude: 67.331, longitude: 56.214 },
+                    { latitude: 67.331, longitude: 56.214 },
+                    { latitude: 67.331, longitude: 56.214 },
+                    { latitude: 67.331, longitude: 56.214 },
+                    { latitude: 67.331, longitude: 56.214 },
+                    { latitude: 67.331, longitude: 56.214 },
+                    { latitude: 67.331, longitude: 56.214 },
+                ];
+                // $scope.donationsAvailable = $firebaseArray(root.child('donations').orderByChild('status').equalTo('esperando'))
+
+                $scope.centersAvailable = $firebaseArray(root.child('centers').orderByChild('active').equalTo(true));
+            }
+
             var init = function(user){
-                console.log(user, "DAMn")
                 if(user){
                     if(user.providerData){
                         if(user.providerData[0]){
@@ -911,6 +1047,7 @@ angular.module('app')
                                     if(volunteer){
                                         console.log(volunteer, 'volunteer existe');
                                         $scope.volunteer = volunteer;
+                                        initMap();
                                     } else {
                                         $scope.volunteer = {
                                             registeredTovolunteer: false,
@@ -936,6 +1073,66 @@ angular.module('app')
 
             if (F.user && !initiated) {
                 init(F.user);
+            }
+        }
+    ]);
+'use strict';
+
+angular.module('app')
+    .directive('mapNearPoints', [
+        "geoDistanceFilter",
+        "NgMap",
+        "$document",
+        function(geoDistanceFilter, NgMap, $document){
+            return {
+                restrict: 'E',
+                scope: {
+                    points: '=',
+                    distance: '=',
+                    onPointSelect: '='
+                },
+                templateUrl: 'partials/map-near-points.html',
+                link: function(scope, ele, attrs){
+                    // scope.currentP = {
+                    //     latitude: 19.390519, longitude: -99.4238064
+                    // }
+                    scope.currentP = {
+                        latitude: 32.123, 
+                        longitude: 43.21
+                    }
+                    scope.pointSelected = false;
+                    scope.nearesPoints = [];
+
+                    scope.selectPoint = function(point){
+                        if(point != scope.onPointSelect) scope.onPointSelect = point;
+                        else scope.onPointSelect = false;
+                    }
+
+                    var getNearestPoints = function(){
+                        scope.nearestPoints = geoDistanceFilter(scope.points, scope.currentP, scope.distance);
+                        setTimeout(function(){
+                            NgMap.getMap().then(function(map){
+                                var center = map.getCenter();
+                                google.maps.event.trigger(map, "resize");
+                                // map.setCenter(center);
+                                // console.log(scope.nearesPoints, scope.points, scope.currentP);
+                            }).catch(function(err){
+                                console.error(err);
+                            });
+                        }, 1000)
+                    }
+
+                    $document.ready(function(){
+                        var getNearestWatcher = scope.$watchGroup(['points','distance'], function(all){
+                            if(all[0] && all[1]){
+                                if(scope.points.length) {
+                                    getNearestPoints();
+                                    getNearestWatcher();
+                                }
+                            }
+                        },1);
+                    });
+                }
             }
         }
     ]);
@@ -980,20 +1177,10 @@ angular.module('app')
                 restrict: 'A',
                 replace: true,
                 scope: {
-                    objects: "=",
                     search: "="
                 },
                 transclude: true,
-                templateUrl: 'partials/search-objects-bar.html',
-                link: function(scope, ele, attrs, ctrl) {
-                    scope.allSelected = false;
-                    scope.toggleSelectAll = function(array) {
-                        for (var a in array) {
-                            array[a].selected = !array[a].selected;
-                        }
-                        scope.allSelected = !scope.allSelected;
-                    };
-                }
+                templateUrl: 'partials/search-objects-bar.html'
             }
         }
     ]);
@@ -1047,6 +1234,55 @@ angular.module('app')
             return obj;
         }
     ]);
+'use strict';
+
+Number.prototype.toRad = function() {
+   return this * Math.PI / 180;
+};
+
+angular.module("app")
+    .filter("geoDistance", [
+        function() {
+           /**
+            * @param points Es el listado de coordenadas de los donadores
+            * @param myLocations es la coordenada del voluntario
+            * @param distance es la distancia en kilometros para el que va recoger
+            */
+            return function(points, myLocation, distance) {
+
+               distance = parseInt(distance) || 10;
+
+               function dist(meLocation, destination) {
+                  var destinationLat = destination.latitude; 
+                  var destinationLong = destination.longitude; 
+                  var sourceLat = meLocation.latitude; 
+                  var sourceLong = meLocation.longitude; 
+                  var earthRadius = 6371; 
+                  var latitudeDiff = destinationLat-sourceLat;
+                  var dLat = latitudeDiff.toRad();  
+                  var longitudeDiff = destinationLong-sourceLong;
+                  var dLon = longitudeDiff.toRad();  
+                  var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(sourceLat.toRad()) * Math.cos(destinationLat.toRad()) * Math.sin(dLon/2) * Math.sin(dLon/2);  
+                  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+                  var d = earthRadius * c;
+                  var m = d * 0.621371; 
+                  var obj = {
+                     kilometers: d,
+                     miles: m 
+                  };
+                  return obj;
+               }
+               for(var t=0;t < points.length; t++){
+                  points[t].distance = dist(myLocation, points[t]).kilometers;
+               }
+               return points.filter(function(item){
+                  return item.distance < distance
+               });
+            }
+        }
+    ]);
+
+    
 'use strict';
 
 angular.module("app")
