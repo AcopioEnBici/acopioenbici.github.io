@@ -3,7 +3,6 @@
 
 <head>
     <meta charset="utf-8">
-    <!--<base href="/apps/clients/zaraya-apps/afich/app/">-->
     <base href="/">
     <title>Acopio en Bici</title>
     <meta name="description" content="sitio de ayuda y donaciones para temblor CDMX 2017, acopio en bici">
@@ -15,13 +14,18 @@
     <link rel="stylesheet" href="css/required.min.css">
     <link rel="stylesheet" href="css/styles.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Reem+Kufi" rel="stylesheet">
+    <!-- Nueva fuente -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,700,900" rel="stylesheet">
+    <!-- Estilos -->
+    <link rel="stylesheet" href="css/pretty.min.css">
     <!-- endbuild -->
 
     <!-- MAPS -->
-    <script src="https://maps.google.com/maps/api/js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
+
     <!-- endbmaps -->
     <!-- Required libraries scripts -->
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
     <script src="js/required.min.js"></script>
     <!-- Endrequired -->
 </head>
@@ -35,7 +39,7 @@
     </div>
 
 
-    <div ui-view layout-fill layout="row" ng-controller="MenuCtrl" ng-cloak></div>
+    <div ui-view layout-fill layout="column" ng-controller="MenuCtrl" ng-cloak></div>
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <script>
         (function(b, o, i, l, e, r) {

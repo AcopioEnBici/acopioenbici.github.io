@@ -19,7 +19,7 @@
                     <input name="name" type="text" ng-model="volunteer.name" required />
                 </md-input-container>
                 <md-input-container class="md-block" flex>
-                    <label>Capacidad de carga en mochila estándar aproximadas</label>
+                    <label>Capacidad de carga en mochila que puedes llevar</label>
                     <input name="capacity" type="text" ng-model="volunteer.capacity" required />
                 </md-input-container>
                 <br>
@@ -92,7 +92,7 @@
         <div flex layout="column" ng-show="F.user && volunteer.provider !== 'twitter'">
             <h3>Usted es administrador</h3>
             <br><br>
-            <md-button ui-sref="admin.volunteers">Ver voluntarios</md-button>   
+            <md-button ui-sref="admin.volunteers">Ver voluntarios</md-button>
         </div>
     </md-content>
 </div>

@@ -1,15 +1,28 @@
 <menu-sidebar-left></menu-sidebar-left>
-<div layout="column" flex ng-cloak>
-    <md-toolbar layout="row" id="subHeader" layout-padding>
+<!-- Inicio landing -->
+<div class="landing full-height" flex layout-fill ng-cloak layout="column">
+    <!-- <md-toolbar layout="row" id="subHeader" class="transparent" layout-padding>
         <md-button ng-click="toggleLeft()" class="md-icon-button" hide-gt-sm aria-label="Settings" ng-disabled="false">
             <md-icon style="color: white" aria-label="hey" class="material-icons step">menu</md-icon>
         </md-button>
         <div flex><h4>Acopio en Bici</h4></div>
         <div hide-sm hide-xs ng-if="F.user" menu-links></div>
-        <!--<img class="mini-thumbnail" src="images/logo.jpg" alt="Logo">-->
-    </md-toolbar>
-    <md-content flex layout='column'>
-        <md-button class='md-primary ' ui-sref="donate">Yo quiero donar</md-button>
-        <md-button class='md-primary hue-2' ui-sref="deliver">Yo quiero entregar</md-button>
-    </md-content>
+    </md-toolbar> -->
+    <div class="landing-container" flex full-height>
+        <a href="" class="logo">
+            <img src="images/acopioenbici-logo.svg" alt="Acopio en Bici">
+        </a>
+        <div class="landing-copy">
+            <h1>¡México, estamos unidos!</h1>
+            <ul class="action-btns-container">
+                <li>
+                    <a ui-sref="donate" class="btn btn-magenta">Quiero donar <i class="fa fa-heart"></i></a>
+                </li>
+                <li>
+                    <a ui-sref="deliver" class="btn btn-yellow">Quiero entregar <i class="fa fa-bicycle"></i></a>
+                </li>
+            </ul>
+        </div>
+        <div class="landing-triangles"></div>
+    </div>
 </div>

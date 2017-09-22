@@ -787,6 +787,12 @@ angular.module("app")
             };
         }
     ])
+/*
+Victor Espinosa:im.vicoy@gmail.com
+twitter:@vicoysito
+*/
+
+
 'use strict';
 
 angular.module('app')
@@ -798,31 +804,56 @@ angular.module('app')
         "NgMap",
         function($rootScope, $scope, errAlertS, successAlertS, NgMap) {
             var initiated = false;
+            $scope.map;
             var root = firebase.database().ref("/");
             $scope.donator = {};
+            $scope.donationSent = false;
 
             var init = function() {
                 initiated = true;
-                NgMap.getMap().then(function(map) {
-                  console.log(map.getCenter());
-                  console.log('markers', map.markers);
-                  console.log('shapes', map.shapes);
-                });
+            }
+
+            var thanks = function(){
+                $scope.donationSent = true;
+                $scope.$apply();
+            }
+
+            //Victor:Para inicializar el mapa se tiene que poner el ID que se tiene en el template
+            NgMap.getMap("map").then(function(evtMap){
+              $scope.map = evtMap;
+            });
+
+            //Victor: funcion para obtener longitud y latitud
+            $scope.getGrabPosition = function(){
+              var position = $scope.map.markers[0].getPosition();
+              return {
+                "lat": position.lat(),
+                "long": position.lng()
+              }
             }
 
             $scope.save = function(){
-                console.log('saving', $scope.donator);
+                var position = $scope.getGrabPosition();
                 $scope.donator.createdAt = moment().valueOf();
+                $scope.donator.latitude = position.lat;
+                $scope.donator.longitude = position.long;
                 $scope.donator.status = 'esperando';
+                console.log('saving', $scope.donator);
                 root.child('donations').push($scope.donator).then(function(){
-                    successAlertS('Gracias por registrarte como donador, en cuanto nos sea posible nos pondremos en contacto contigo');
+                    thanks();
                 }, errAlertS);
             }
 
             $scope.ubicateMe = function(){
                 console.log('ubicating me');
-                //
             }
+
+            $scope.getCoords = function() {
+              NgMap.getGeoLocation($scope.addressInput).then(function(latlng) {
+                $scope.map.markers[0].setPosition(latlng);
+                $scope.map.setCenter(latlng);
+              });
+            };
 
             init();
         }
@@ -874,25 +905,51 @@ angular.module('app')
         '$timeout',
         '$rootScope',
         'AppF',
-        function($scope, $log, $mdSidenav, $timeout, $rootScope, AppF) {
+        '$window',
+        function ($scope, $log, $mdSidenav, $timeout, $rootScope, AppF, $window) {
             $log.debug('inside MenuCtrl');
             // $scope.toggleLeft = buildDelayedToggler('left');
-            $scope.toggleLeft = function(){
+            $scope.toggleLeft = function () {
                 $mdSidenav('left')
-                .toggle()
-                .then(function() {
-                    $log.debug("toggle is done");
-                });
+                    .toggle()
+                    .then(function () {
+                        $log.debug("toggle is done");
+                    });
             }
             $rootScope.F = AppF;
 
-            $scope.close = function() {
+            $scope.close = function () {
                 $mdSidenav('left')
                 .close()
-                .then(function() {
+                .then(function () {
                     $log.debug("close LEFT is done");
                 });
             }
+
+            $scope.triggerMenu = function(ev){
+                angular.element('.nav-trigger').toggleClass('active');
+                angular.element('.nav').toggleClass('mobile-nav-active');
+            }
+
+            $window.onload = function(event){
+                toogleMenu()
+            }
+
+            $window.onresize = function(event){
+                toogleMenu()
+            }
+
+            var toogleMenu = function(){
+                console.log(event, "DAMN")
+                var width = $window.innerWidth;
+                if (width >= 769) {
+                    console.log("big device");
+                    angular.element('.nav').removeClass('mobile-nav-active');
+                } else {
+                    console.log("small device")
+                }
+            }
+
             /**
              * Supplies a function that will continue to operate until the
              * time is up.
@@ -903,7 +960,7 @@ angular.module('app')
                     var context = $scope,
                         args = Array.prototype.slice.call(arguments);
                     $timeout.cancel(timer);
-                    timer = $timeout(function() {
+                    timer = $timeout(function () {
                         timer = undefined;
                         func.apply(context, args);
                     }, wait || 10);
@@ -914,11 +971,11 @@ angular.module('app')
              * report completion in console
              */
             function buildDelayedToggler(navID) {
-                return debounce(function() {
+                return debounce(function () {
                     // Component lookup should always be available since we are not using `ng-if`
                     $mdSidenav(navID)
                         .toggle()
-                        .then(function() {
+                        .then(function () {
                             $log.debug("toggle " + navID + " is done");
                         });
                 }, 200);

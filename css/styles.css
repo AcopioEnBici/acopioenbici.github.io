@@ -276,3 +276,9 @@ md-list-item.disabled {
   background: #3CACE0; }
   .twitterButton span, .twitterButton md-icon {
     color: white !important; }
+
+.transparent {
+  background-color: transparent !important; }
+
+.btn {
+  cursor: pointer; }
