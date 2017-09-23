@@ -20,12 +20,14 @@
     <link rel="stylesheet" href="css/pretty.min.css">
     <!-- endbuild -->
 
-    <!-- MAPS -->
-    <script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
+    <!-- Server -->
+    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=&libraries=places"></script> -->
+    <!-- Local -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJnOnSebsS7tgMQ7h2Xj5jlkYHb5_rna0&libraries=places"></script>
 
     <!-- endbmaps -->
     <!-- Required libraries scripts -->
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <!-- <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script> -->
     <script src="js/required.min.js"></script>
     <!-- Endrequired -->
 </head>
@@ -35,7 +37,9 @@
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
     <div class="splash" ng-cloak>
-        <img src="/images/heart.svg" height="200">
+        <div class="heart-container">
+            <i class="fa fa-heart success"></i>
+        </div>
     </div>
 
 
@@ -57,6 +61,7 @@
         ga('create', 'UA-XXXXX-X');
         ga('send', 'pageview');
     </script>
+    <script src="https://use.fontawesome.com/83870c468a.js"></script>
 
     <script src="js/app.min.js"></script>
 </body>

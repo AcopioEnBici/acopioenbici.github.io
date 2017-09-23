@@ -38,56 +38,6 @@
                 <md-icon>twitter-box</md-icon>
             </md-button>
         </div>
-        <!-- Si está logeado con twitter y ya se registro -->
-        <div flex layout="column" ng-show="F.user && volunteer.provider == 'twitter' && volunteer.registeredTovolunteer">
-            <h3>Gracias! Ya estás registrado como voluntario</h3>
-            <h5 ng-show="!volunteer.active">tu cuenta no ha sido activada</h4>
-            <h5 ng-show="volunteer.active">y tu cuenta ya fue activada</h4>
-            <!-- Cuendo el voluntario esta activo y aun no selecciona donación -->
-            <div ng-if='volunteer.active && !selectedDonation'>
-                <h4>Elige un punto para ir por una donación</h4>
-                <map-near-points on-point-select='selectedDonation' points="donationsAvailable" distance="distanceFromMe"></map-near-points>
-            </div>
-            <!-- Cuando el voluntario ya selecciono una donación -->
-            <div ng-if='volunteer.active && selectedDonation && !selectedDonation.pickedUp'>
-                <h4>Elige un punto para ir por una donación</h4>
-                <ng-map zoom="14">
-                    <directions
-                        draggable="false"
-                        travel-mode="BICYCLING"
-                        origin="current-location"
-                        destination="[{{selectedDonation.latitude}}, {{selectedDonation.longitude}}]"></directions>
-                </ng-map>
-                <div layout="row" class="md-padding">
-                    <div flex>
-                        <md-button class="md-warn" ng-click="cancelPickup()">Cancelar</md-button>
-                    </div>
-                    <div flex>
-                        <md-button class="md-primary" ng-click="pickupDonation()">Recoger</md-button>
-                    </div>
-                </div>
-            </div>
-            <!-- Cuando el voluntario ya recogió la donación y va a seleccionar el centro de acopio -->
-            <div ng-if='volunteer.active && selectedDonation && selectedDonation.pickedUp && !selectedCenter'>
-                <h4>Elige un centro de acopio para entregar la donación</h4>
-                <map-near-points on-point-select='selectedCenter' points="centersAvailable" distance="distanceForCenters"></map-near-points>
-            </div>
-            <!-- Cuando el voluntario ya selecciono el centro de acopio al cual entregar  -->
-            <div ng-if='volunteer.active && selectedDonation && selectedDonation.pickedUp && selectedCenter'>
-                <ng-map zoom="14">
-                    <directions
-                        draggable="false"
-                        travel-mode="BICYCLING"
-                        origin="current-location"
-                        destination="[{{selectedCenter.latitude}}, {{selectedCenter.longitude}}]"></directions>
-                </ng-map>
-                <div layout="row" class="md-padding">
-                    <div flex>
-                        <md-button class="md-primary" ng-click="deliverDonation()">Entregar</md-button>
-                    </div>
-                </div>
-            </div>
-        </div>
         <!-- Si está logeado como admin -->
         <div flex layout="column" ng-show="F.user && volunteer.provider !== 'twitter'">
             <h3>Usted es administrador</h3>

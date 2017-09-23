@@ -10,7 +10,7 @@
                 <h1>Quiero Donar <i class="fa fa-heart"></i></h1>
             </div>
         </header>
-    
+
         <nav class="nav" role="menubar">
             <a class="logo">
                 <img src="images/acopioenbici-logo.svg" alt="Acopio en Bici">
@@ -124,8 +124,8 @@
                     </div>
                     <div class="form-row">
                         <div class="form-field">
-                            <label for="ubication">Ubicaci&oacute;n de recolecci&oacute;n </label>
-                            <input placeholder="Introduce un lugar" ng-model="addressInput" places-auto-complete types="['geocode']" name="ubication" on-place-changed="getCoords()" component-restrictions="{country:'mx'}"
+                            <label for="ubication">Ubicaci&oacute;nes de recolecci&oacute;n </label>
+                            <input id="addressInput" placeholder="Introduce un lugar" ng-model="addressInput" places-auto-complete types="['geocode']" name="ubication" on-place-changed="getCoords()" component-restrictions="{country:'mx'}"
                             />
                         </div>
                         <div class="form-field" ng-class="{'error': donateForm.address.$invalid}">
@@ -141,7 +141,7 @@
                     </div>
                     <div class="form-row">
                         <ng-map id="map">
-                            <marker centered="true" center="lng,lat" position="current-location" draggable="true"></marker>
+                            <marker centered="true"  position="current-location" draggable="true"></marker>
                         </ng-map>
                     </div>
                     <div class="form-row">

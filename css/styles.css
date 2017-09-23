@@ -243,7 +243,7 @@ img.logo {
   display: none; }
 
 .splash {
-  background: #002b8b;
+  background: #ffffff;
   height: 100%;
   width: 100%;
   z-index: 9999;
@@ -255,6 +255,19 @@ img.logo {
   .splash img {
     margin: 20% auto;
     display: block; }
+  .splash .heart-container {
+    display: block;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%); }
+    .splash .heart-container .fa-heart {
+      color: #E91E63;
+      font-size: 144px; }
 
 #subHeader {
   font-family: "Reem Kufi", sans-serif;

@@ -1,0 +1,49 @@
+<md-toolbar md-scroll-shrink ng-if="true" class="md-tall md-primary md-hue-2" md-whiteframe="1" layout-align="center center">
+    <div class="md-toolbar-tools">
+        <span flex><h3>Centros de Acopio</h3></span>
+        <md-button ng-if="selected.length" ng-click="showRemoveDialog($event)" class="md-fab md-mini md-warn md-raised md-hue-2"
+            aria-label="Remove">
+            <md-icon aria-label="Borrar Centro" class="material-icons bolder">
+                delete
+            </md-icon>
+        </md-button>
+    </div>
+</md-toolbar>
+<md-content flex>
+    <md-subheader>
+        <div search-objects-bar search="search"></div>
+    </md-subheader>
+    <md-table-container>
+        <table md-table md-row-select ng-model='selected'>
+            <thead md-head>
+                <tr md-row>
+                    <th md-column md-order-by='name'>Nombre</th>
+                    <th md-column md-order-by='latitude'>Latitud</th>
+                    <th md-column md-order-by='longitude'>Longitud</th>
+                    <th md-column md-order-by='active'>Activa</th>
+                    <th md-column>Acciones</th>
+                </tr>
+            </thead>
+            <tbody md-body>
+                <tr md-row ng-repeat="center in (filteredItems = (centers | filter:search | orderBy:'date')) | limitTo: F.paginate: (currentPage - 1) * F.paginate" md-select='center' md-select-id='$id'
+                    class="noright" ng-class="{'disabled': center.pickedUp}">
+                    <td md-cell>{{center.properties.Name}}</td>
+                    <td md-cell>{{center.geometry.coordinates[0]}}</td>
+                    <td md-cell>{{center.geometry.coordinates[1]}}</td>
+                    <td md-cell>{{center.active ? 'Si' : 'No'}}</td>
+                    <th md-cell>
+                        <md-button ng-show='!center.active' class="md-primary md-mini md-fav" ng-click="activate(center)">
+                            <md-tooltip md-direction="left">Activar</md-tooltip>
+                            <md-icon>check</md-icon>
+                        </md-button>
+                        <md-button ng-show='center.active' class="md-primary md-mini md-fav" ng-click="deactivate(center)">
+                            <md-tooltip md-direction="left">Desactivar</md-tooltip>
+                            <md-icon>close</md-icon>
+                        </md-button>
+                    </th>
+                </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+    <md-table-pagination md-limit="F.paginate" md-limit-options="[5, 10, 15]" md-page="currentPage" md-total="{{centers.length}}" md-page-select></md-table-pagination>
+</md-content>

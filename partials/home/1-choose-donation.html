@@ -1,0 +1,56 @@
+<menu-sidebar-left></menu-sidebar-left>
+<div layout="column" flex ng-cloak>
+    <md-toolbar layout="row" id="subHeader" layout-padding>
+        <md-button ng-click="toggleLeft()" class="md-icon-button" hide-gt-sm aria-label="Settings" ng-disabled="false">
+            <md-icon style="color: white" aria-label="hey" class="material-icons step">menu</md-icon>
+        </md-button>
+        <div flex><h4>Acopio en Bici - Escoger Donación</h4></div>
+        <div hide-sm hide-xs menu-links></div>
+    </md-toolbar>
+    <md-content flex layout="column" class="md-padding">
+        <div flex layout="column" ng-show="F.user && volunteer.provider == 'twitter' && volunteer.registeredTovolunteer">
+            <!-- Cuando el voluntario esta activo y aun no selecciona donación -->
+            <div ng-if='volunteer.active && !selectedDonation && !volunteer.selectedDonation'>
+                <h4>Elige un punto para ir por una donación</h4>
+                <ng-map id="map" zoom="14">
+                    <marker
+                        id="myPosition"
+                        position="current"
+                        animation="Animation.BOUNCE"
+                        centered="true"></marker>
+                    <marker 
+                        on-click="selectDonation(donation, $index)" 
+                        ng-repeat="donation in nearestDonations track by donation.$id"
+                        id="marker-donation-{{donation.$id}}" 
+                        position="[{{donation.latitude}}, {{donation.longitude}}]"></marker>
+                </ng-map>
+            </div>
+            <!-- Cuando el voluntario ya selecciono una donación -->
+            <div ng-if='volunteer.active && selectedDonation && selectedDonation.status == "recogiendo"'>
+                <h4>Elegiste la donación de {{selectedDonation.name}}</h4>
+                <p>Esta en: {{selectedDonation.address}}</p>
+                <ng-map id="direccionADonacion" zoom="14">
+                    <directions
+                        draggable="false"
+                        travel-mode="BICYCLING"
+                        origin="current-location"
+                        destination="[{{selectedDonation.latitude}}, {{selectedDonation.longitude}}]"></directions>
+                </ng-map>
+                <div layout="row" class="md-padding">
+                    <div flex>
+                        <md-button class="md-warn" ng-click="cancelPickup()">Cancelar</md-button>
+                    </div>
+                    <div flex>
+                        <md-button class="md-primary" ng-click="pickupDonation()">Recoger</md-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Si está logeado como admin -->
+        <div flex layout="column" ng-show="F.user && volunteer.provider !== 'twitter'">
+            <h3>Usted es administrador</h3>
+            <br><br>
+            <md-button ui-sref="admin.volunteers">Ver voluntarios</md-button>
+        </div>
+    </md-content>
+</div>

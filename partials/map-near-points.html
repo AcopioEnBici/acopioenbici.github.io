@@ -1,12 +1,14 @@
-<ng-map zoom="14">
-    <marker 
-        id="myPosition"
-        position="current" 
-        animation="Animation.BOUNCE" 
-        centered="true"></marker>
-    <marker 
-        on-click="selectPoint(point)" 
-        ng-repeat="point in nearestPoints track by $index"
-        id="marker-{{$index}}" 
-        position="[{{point.latitude}}, {{point.longitude}}]"></marker>
-</ng-map>
+<div>
+    <ng-map id="map" zoom="14">
+        <marker 
+            id="myPosition"
+            position="current" 
+            animation="Animation.BOUNCE" 
+            centered="true"></marker>
+        <marker 
+            on-click="selectPoint(point, $index)" 
+            ng-repeat="point in nearestPoints track by point.$id"
+            id="marker-{{point.$id}}" 
+            position="[{{point.latitude}}, {{point.longitude}}]"></marker>
+    </ng-map>
+</div>
