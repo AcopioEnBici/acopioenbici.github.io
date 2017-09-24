@@ -11,7 +11,22 @@
             </div>
         </header>
 
-        <div front-menu active="donate"></div>
+        <nav class="nav" role="menubar">
+            <a class="logo">
+                <img src="images/acopioenbici-logo.svg" alt="Acopio en Bici">
+            </a>
+            <ul>
+                <li><a ui-sref="home">Inicio</a></li>
+                <li class="active"><a>Quiero Donar</a></li>
+                <li><a ui-sref="deliver">Quiero Entregar</a></li>
+                <li><a target="_blanc" href=""><i class="fa fa-twitter-square"></i></a></li>
+                <li><a target="_blanc" href=""><i class="fa fa-facebook-square"></i></a></li>
+            </ul>
+            <a hide-gt-xs class="nav-trigger active" ng-click="triggerMenu()">
+                <md-icon id="menu" class="material-icons">menu</md-icon>
+                <md-icon id="close" class="material-icons">close</md-icon>
+            </a>
+        </nav>
         <div class="main-container" role="main">
             <!-- Formulario para donacion -->
             <section class="form-container" ng-if="!donationSent">
@@ -58,7 +73,7 @@
                     </div>
                     <div class="form-row">
                         <div class="form-field" ng-class="{'error': donateForm.sizeOfBag.$invalid}">
-                            <label for="sizeOfBag">Tamaño de Mochila <span>*</span></label>
+                            <label for="sizeOfBag">Peso y Tamaño de la Donación<span>*</span></label>
                             <div class="field-container">
                                 <input name="sizeOfBag" type="text" ng-model="donator.sizeOfBag" required  placeholder="ej: 20 kg, 40 cm * 20 cm" />
                             </div>
