@@ -726,6 +726,7 @@ angular.module('app')
             $scope.selectedDonation = false;
             $scope.selectedCenter = false;
             $scope.map;
+            $scope.loading = true;
 
             var init = function(user){
                 if(user){
@@ -740,7 +741,7 @@ angular.module('app')
                                         $scope.volunteer = volunteer;
                                         if($scope.volunteer.hasOwnProperty('selectedDonation')){
                                             getSelectedDonation($scope.volunteer.selectedDonation);
-                                            initMap();
+                                            getMapInfo();
                                         } else {
                                             $state.go('chooseDonation');
                                         }
@@ -846,22 +847,52 @@ angular.module('app')
                 });
             }
 
-            /**
-             * Se inicializa el mapa
-             */
-            var initMap = function(){ 
-                $scope.centersAvailable = $firebaseArray(root.child('centers'));
-                $scope.centersAvailable.$loaded().then(function(){
-                    getNearestCenters()
+            var addMarker = function(lat, lng, name, place){
+                var marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(lat,lng),
+                    map: $scope.map,
+                    title: name
+                });
+                google.maps.event.addListener(marker, 'click', function(){
+                    $scope.selectCenter(place);
+                });
+            }
+
+            var initMap = function(){
+                F.getLocation().then(function(myPosition){
+                    var latlng = new google.maps.LatLng(myPosition.latitude,myPosition.longitude);
+                    var myOptions = {
+                        zoom: 14,
+                        center: latlng,
+                        mapTypeId: google.maps.MapTypeId.TERRAIN
+                    };
+                    $scope.map = new google.maps.Map(document.getElementById('map'),myOptions);
+                    // $scope.nearestCenters = geoDistanceFilter($scope.centersAvailable, myPosition, $scope.distanceFromMe);
+                    $scope.nearestCenters = $scope.centersAvailable;
+                    console.log($scope.nearestCenters, "DAMN");
+                    for (var d in $scope.nearestCenters){
+                        var center = $scope.nearestCenters[d];
+                        if(center.hasOwnProperty('$id')){
+                            addMarker(center.geometry.coordinates[1], center.geometry.coordinates[0], center.properties.Name, center);
+                        }
+                    }
+                    $scope.loading = false;
+        
+                    google.maps.event.addListenerOnce($scope.map, 'idle', function() {
+                        google.maps.event.trigger($scope.map, 'resize');
+                        $scope.map.setCenter(latlng);
+                    });
                 });
             }
 
             /**
-             * Se obtienen los centros cercanos
+             * Se inicializa el mapa
              */
-            var getNearestCenters = function(){
-                $scope.nearestCenters = $scope.centersAvailable;
-                console.log($scope.nearestCenters, "COOL")
+            var getMapInfo = function(){ 
+                $scope.centersAvailable = $firebaseArray(root.child('centers'));
+                $scope.centersAvailable.$loaded().then(function(){
+                    initMap();
+                });
             }
 
             /**
@@ -894,7 +925,7 @@ angular.module('app')
             /**
              * Cuando se seleccióna un centro a la cual entregar
              */
-            $scope.selectCenter = function(ev, point){
+            $scope.selectCenter = function(point){
                 console.log(point, i, "select point");
                 $scope.selectedCenter = point;
                 $scope.selectedDonation.status = 'entregando';
@@ -971,6 +1002,7 @@ angular.module('app')
             $scope.distanceFromMe = 10;
             $scope.selectedDonation = false;
             $scope.map;
+            $scope.loading = true;
 
             var init = function(user){
                 if(user){
@@ -986,7 +1018,7 @@ angular.module('app')
                                         if($scope.volunteer.hasOwnProperty('selectedDonation')){
                                             getSelectedDonation($scope.volunteer.selectedDonation);
                                         }
-                                        initMap();
+                                        getMapInfo();
                                     } else {
                                         $scope.volunteer = {
                                             registeredTovolunteer: false,
@@ -1076,34 +1108,47 @@ angular.module('app')
                 });
             }
 
+            var addMarker = function(lat, lng, name, place){
+                var marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(lat,lng),
+                    map: $scope.map,
+                    title: name
+                });
+                google.maps.event.addListener(marker, 'click', function(){
+                    $scope.selectDonation(place);
+                });
+            }
+
+            var initMap = function(){
+                F.getLocation().then(function(myPosition){
+                    var latlng = new google.maps.LatLng(myPosition.latitude,myPosition.longitude);
+                    var myOptions = {
+                        zoom: 14,
+                        center: latlng,
+                        mapTypeId: google.maps.MapTypeId.TERRAIN
+                    };
+                    $scope.map = new google.maps.Map(document.getElementById('map'),myOptions);
+                    $scope.nearestDonations = geoDistanceFilter($scope.donationsAvailable, myPosition, $scope.distanceFromMe);
+                    for (var d in $scope.nearestDonations){
+                        var donation = $scope.nearestDonations[d];
+                        addMarker(donation.latitude, donation.longitude, donation.name + ' - ' + donation.categoryOfDonations, donation);
+                    }
+        
+                    $scope.loading = false;
+                    google.maps.event.addListenerOnce($scope.map, 'idle', function() {
+                        google.maps.event.trigger($scope.map, 'resize');
+                        $scope.map.setCenter(latlng);
+                    });
+                });
+            }
+
             /**
              * Se inicializa el mapa
              */
-            var initMap = function(){ 
+            var getMapInfo = function(){ 
                 $scope.donationsAvailable = $firebaseArray(root.child('donations').orderByChild('status').equalTo('esperando'));
-            }
-
-            /**
-             * Se obtienen las donaciones cercanas
-             */
-            var getNearestDonations = function(){
-                var position = $scope.map.markers['myPosition'].getPosition();
-                $scope.currentP = {
-                    latitude: position.lat(), 
-                    longitude: position.lng()
-                }
-                $scope.nearestDonations = geoDistanceFilter($scope.donationsAvailable, $scope.currentP, $scope.distanceFromMe);
-            }
-
-            /**
-             * Se observa el marcador con mi posicion y entonces se obtienen las donaciones cercanas
-             */
-            var watchMarkersThenInit = function(){
-                console.log('listening for markers My position', $scope.map.markers.myPosition)
-                $scope.$watch('map.markers.myPosition', function(myPosition){
-                    if(myPosition){
-                        getNearestDonations();
-                    }
+                $scope.donationsAvailable.$loaded().then(function(){
+                    initMap();
                 });
             }
 
@@ -1147,7 +1192,7 @@ angular.module('app')
             /**
              * Cuando se seleccióna una donación a la cual recoger
              */
-            $scope.selectDonation = function(ev, point){
+            $scope.selectDonation = function(point){
                 console.log(point, i, "select point");
                 $scope.selectedDonation = point;
                 $scope.selectedDonation.status = 'recogiendo';
@@ -1158,30 +1203,6 @@ angular.module('app')
                 });
             }
 
-
-            /**
-             * Se inicializa el mapa para ponerlo en scope 
-             * Probablemente necesitemos hacer lo mismo con los otros mapas
-             */
-            NgMap.getMap("map").then(function(evtMap){
-                $scope.map = evtMap;
-            });
-
-            /**
-             * Cuando el documento esta listo, observamos $scope.donationsAvailable y $scope.map.markers.myPosition para inicializar la logica del mapa
-             */
-            $document.ready(function(){
-                var getNearestDonationsWatcher = $scope.$watchGroup(['donationsAvailable', 'map.markers.myPosition'], function(all){
-                    if(all[0] && all[1]){
-                        $scope.donationsAvailable.$loaded().then(function(){
-                            watchMarkersThenInit();
-                            getNearestDonationsWatcher();
-                        });
-                    }
-                },1);
-            });
-            
-            
             /**
              * En esta parte detectamos cuando se logea para iniciar el ctrl
              */
@@ -1528,7 +1549,7 @@ angular.module('app')
         "AppF",
         function($rootScope, $scope, $http, $sessionStorage, AppF) {
             $rootScope.F = AppF;
-
+            
             var init = function() {
                 
             }
@@ -1888,7 +1909,13 @@ angular.module('app')
 angular.module('app')
     .factory('AppF', [
         "$state",
-        function($state) {
+        "errAlertS",
+        "$q",
+        function(
+            $state,
+            errAlertS,
+            $q
+        ) {
             var obj = {
                 paginate: 5,
                 recycleDays: 30,
@@ -1910,6 +1937,28 @@ angular.module('app')
                         if (objects[a].selected) return true;
                     }
                     return false;
+                },
+                getLocation: function(){
+                    var promise = $q.defer();
+                    if(obj.myPosition){
+                        promise.resolve(obj.myPosition);
+                    } else {
+                        if (navigator.geolocation) {
+                            navigator.geolocation.getCurrentPosition(function(position){
+                                obj.myPosition = {
+                                    latitude: position.coords.latitude,
+                                    longitude: position.coords.longitude
+                                }
+                                console.log(position, "ALMENOS")
+                                promise.resolve(obj.myPosition);
+                            }, function(err){
+                                promise.reject(err);
+                            });
+                        } else {
+                            promise.reject("Geolocation no está soportada en su navegador.")
+                        }
+                    }
+                    return promise.promise;
                 }
             };
 

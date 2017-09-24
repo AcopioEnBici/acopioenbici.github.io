@@ -295,3 +295,31 @@ md-list-item.disabled {
 
 .btn {
   cursor: pointer; }
+
+.map {
+  min-height: 400px !important; }
+
+.loading {
+  display: block;
+  position: absolute;
+  top: 0;
+  margin-top: 200px;
+  height: 300px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.6); }
+  .loading img {
+    margin: 20% auto;
+    display: block; }
+  .loading .heart-container {
+    display: block;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%); }
+    .loading .heart-container .fa-heart {
+      color: #E91E63;
+      font-size: 144px; }

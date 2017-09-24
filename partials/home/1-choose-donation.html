@@ -8,11 +8,16 @@
         <div hide-sm hide-xs menu-links></div>
     </md-toolbar>
     <md-content flex layout="column" class="md-padding">
+        <div class='loading' ng-show='loading'>
+            <div class="heart-container">
+                <i class="fa fa-heart success"></i>
+            </div>
+        </div>
         <div flex layout="column" ng-show="F.user && volunteer.provider == 'twitter' && volunteer.registeredTovolunteer">
             <!-- Cuando el voluntario esta activo y aun no selecciona donación -->
-            <div ng-if='volunteer.active && !selectedDonation && !volunteer.selectedDonation'>
+            <div ng-show='volunteer.active && !selectedDonation && !volunteer.selectedDonation' layout='column'>
                 <h4>Elige un punto para ir por una donación</h4>
-                <ng-map id="map" zoom="14">
+                <!-- <ng-map id="map" zoom="14">
                     <marker
                         id="myPosition"
                         position="current"
@@ -23,7 +28,8 @@
                         ng-repeat="donation in nearestDonations track by donation.$id"
                         id="marker-donation-{{donation.$id}}" 
                         position="[{{donation.latitude}}, {{donation.longitude}}]"></marker>
-                </ng-map>
+                </ng-map> -->
+                <div id="map" class="map" flex layout-fill></div>
             </div>
             <!-- Cuando el voluntario ya selecciono una donación -->
             <div ng-if='volunteer.active && selectedDonation && selectedDonation.status == "recogiendo"'>

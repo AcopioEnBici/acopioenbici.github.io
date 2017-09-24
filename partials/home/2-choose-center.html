@@ -8,12 +8,17 @@
         <div hide-sm hide-xs menu-links></div>
     </md-toolbar>
     <md-content flex layout="column" class="md-padding">
+        <div class='loading' ng-show='loading'>
+            <div class="heart-container">
+                <i class="fa fa-heart success"></i>
+            </div>
+        </div>
         <!-- Si está logeado con twitter y ya se registro -->
         <div flex layout="column" ng-show="F.user && volunteer.provider == 'twitter' && volunteer.registeredTovolunteer">
             <!-- Cuando el voluntario ya recogió la donación y va a seleccionar el centro de acopio -->
-            <div ng-if='volunteer.active && selectedDonation && selectedDonation.status == "recogido" && !selectedCenter'>
+            <div ng-show='volunteer.active && selectedDonation && selectedDonation.status == "recogido" && !selectedCenter'>
                 <h4>Elige un centro de acopio para entregar la donación</h4>
-                <ng-map id="map" zoom="14">
+                <!-- <ng-map id="map" zoom="14">
                     <marker 
                         id="myPosition"
                         position="current" 
@@ -24,7 +29,8 @@
                         ng-repeat="center in nearestCenters track by center.$id"
                         id="marker-center-{{center.$id}}" 
                         position="[{{center.geometry.coordinates[1]}}, {{center.geometry.coordinates[0]}}]"></marker>
-                </ng-map>
+                </ng-map> -->
+                <div id="map" class="map" flex layout-fill></div>
                 <div layout="row" class="md-padding">
                     <div flex>
                         <md-button class="md-warn" ng-click="cancelPickup()">Cancelar</md-button>
