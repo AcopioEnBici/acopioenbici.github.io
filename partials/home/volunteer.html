@@ -1,48 +1,55 @@
 <menu-sidebar-left></menu-sidebar-left>
-<div layout="column" flex ng-cloak>
-    <md-toolbar layout="row" id="subHeader" layout-padding>
-        <md-button ng-click="toggleLeft()" class="md-icon-button" hide-gt-sm aria-label="Settings" ng-disabled="false">
-            <md-icon style="color: white" aria-label="hey" class="material-icons step">menu</md-icon>
-        </md-button>
-        <div flex><h4>Acopio en Bici - Registrarme</h4></div>
-        <div hide-sm hide-xs menu-links></div>
-    </md-toolbar>
-    <md-content flex layout="column" class="md-padding">
-        <!-- Si esta logeado con twitter y no se ha registrado -->
-        <div flex layout="column" ng-show="F.user && volunteer.provider == 'twitter' && !volunteer.registeredTovolunteer">
-            <md-toolbar class="md-padding" style="background: rgba(0,0,0,0.7);">
-                Hola {{F.user.displayName}} favor de llenar el formulario
-            </md-toolbar>
-            <form name="volunteerForm" novalidate class="md-padding">
-                <md-input-container class="md-block" flex>
-                    <label>Nombre</label>
-                    <input name="name" type="text" ng-model="volunteer.name" required />
-                </md-input-container>
-                <md-input-container class="md-block" flex>
-                    <label>Capacidad de carga en mochila que puedes llevar</label>
-                    <input name="capacity" type="text" ng-model="volunteer.capacity" required />
-                </md-input-container>
-                <br>
-                <div layour="row">
-                    <div flex></div>
-                    <md-button ng-disabled="volunteerForm.$invalid" class="md-primary md-fab" ng-click="save()">
-                        <md-icon>save</md-icon>
-                    </md-button>
-                </div>
-            </form>
-        </div>
-        <!-- Si no esta logeado -->
-        <div flex layout="column" ng-show="!F.user">
-            <md-button class="md-primary twitterButton" ng-click="loginWithTwitter()">
-                Continuar con Twitter
-                <md-icon>twitter-box</md-icon>
-            </md-button>
-        </div>
-        <!-- Si está logeado como admin -->
-        <div flex layout="column" ng-show="F.user && volunteer.provider !== 'twitter'">
-            <h3>Usted es administrador</h3>
-            <br><br>
-            <md-button ui-sref="admin.volunteers">Ver voluntarios</md-button>
+<div class="landing full-height" flex layout-fill layout="column" ng-cloak>
+    <md-content flex>
+        <header class="header" role="banner">
+            <figure class="hero">
+                <img src="images/hero-donar.jpg" alt="donar">
+                <figcaption>Foto: Luis Arango</figcaption>
+            </figure>
+            <div class="header-container">
+                <h1>Registro de Voluntarios <i class="fa fa-heart"></i></h1>
+            </div>
+        </header>
+
+        <div front-menu active="deliver"></div>
+        <div class="main-container" role="main">
+            <div partial-loading></div>
+            <!-- Si esta logeado con twitter y no se ha registrado -->
+            <div flex layout="column" ng-show="F.user && volunteer.provider == 'twitter' && !volunteer.registeredTovolunteer">
+                <md-toolbar class="md-padding" style="background: rgba(0,0,0,0.7);">
+                    Hola {{F.user.displayName}} favor de llenar el formulario
+                </md-toolbar>
+                <form name="volunteerForm" novalidate class="md-padding">
+                    <md-input-container class="md-block" flex>
+                        <label>Nombre</label>
+                        <input name="name" type="text" ng-model="volunteer.name" required />
+                    </md-input-container>
+                    <md-input-container class="md-block" flex>
+                        <label>Capacidad de carga en mochila que puedes llevar</label>
+                        <input name="capacity" type="text" ng-model="volunteer.capacity" required />
+                    </md-input-container>
+                    <br>
+                    <div layour="row">
+                        <div flex></div>
+                        <md-button ng-disabled="volunteerForm.$invalid" class="md-primary md-fab" ng-click="save()">
+                            <md-icon>save</md-icon>
+                        </md-button>
+                    </div>
+                </form>
+            </div>
+            <!-- Si no esta logeado -->
+            <div flex layout="column" ng-show="!F.user">
+                <md-button class="md-primary twitterButton" ng-click="loginWithTwitter()">
+                    Continuar con Twitter
+                    <md-icon>twitter-box</md-icon>
+                </md-button>
+            </div>
+            <!-- Si está logeado como admin -->
+            <div flex layout="column" ng-show="F.user && volunteer.provider !== 'twitter'">
+                <h3>Usted es administrador</h3>
+                <br><br>
+                <md-button ui-sref="admin.volunteers">Ver voluntarios</md-button>
+            </div>
         </div>
     </md-content>
 </div>

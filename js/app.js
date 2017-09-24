@@ -1844,6 +1844,26 @@ angular.module('app')
 'use strict';
 
 angular.module('app')
+    .directive('frontMenu', [
+        function(){
+            return {
+                restrict: 'A',
+                scope: true,
+                transclude: true,
+                templateUrl: 'partials/front-menu.html',
+                link: function(scope, ele, attrs){
+                    scope.active = attrs.active;
+                    attrs.$observe('active', function() {
+                        // @todo falta hacer esto funcionar
+                        scope.active = attrs.active;
+                    });
+                }
+            }
+        }
+    ]);
+'use strict';
+
+angular.module('app')
     .directive('menuLinks', [
         "$state",
         function($state){
@@ -1873,6 +1893,19 @@ angular.module('app')
     ]);
 
 
+'use strict';
+
+angular.module('app')
+    .directive('partialLoading', [
+        function(){
+            return {
+                restrict: 'A',
+                scope: true,
+                transclude: true,
+                templateUrl: 'partials/partial-loading.html'
+            }
+        }
+    ]);
 'use strict';
 
 angular.module('app')
