@@ -1,27 +1,78 @@
-<div class="landing full-height" flex layout-fill layout="column" ng-cloak>
-    <header class="header" role="banner">
-        <figure class="hero">
-            <img src="images/hero-donar.jpg" alt="donar">
-            <figcaption>Foto: Luis Arango</figcaption>
-        </figure>
-        <div class="header-container">
-            <h1>Error 404 <i class="fa fa-exclamation-circle"></i></h1>
+<!doctype html>
+<html class="no-js" ng-app="app">
+
+<head>
+    <meta charset="utf-8">
+    <base href="/">
+    <title>Acopio en Bici - 404</title>
+    <meta name="description" content="sitio de ayuda y donaciones para temblor CDMX 2017, acopio en bici">
+    <meta name="viewport" content="width=device-width">
+    <link rel="icon" href="favicon.png" sizes="16x16 32x32" type="image/png">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+    <!-- build:css({.tmp,app}) styles/main.css -->
+    <link rel="stylesheet" href="css/required.min.css">
+    <link rel="stylesheet" href="css/styles.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Nueva fuente -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,700,900" rel="stylesheet">
+    <!-- Estilos -->
+    <link rel="stylesheet" href="css/pretty.min.css">
+    <!-- endbuild -->
+
+    <!-- Server -->
+    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=&libraries=places"></script> -->
+    <!-- Local -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJnOnSebsS7tgMQ7h2Xj5jlkYHb5_rna0&libraries=places"></script>
+
+    <!-- endbmaps -->
+    <!-- Required libraries scripts -->
+    <!-- <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script> -->
+    <script src="js/required.min.js"></script>
+    <!-- Endrequired -->
+</head>
+
+<body ng-controller="GeneralCtrl">
+    <!--[if lt IE 10]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    <div class="splash" ng-cloak>
+        <div class="heart-container">
+            <i class="fa fa-heart success"></i>
         </div>
-    </header>
+    </div>
+    <div class="landing full-height" flex layout-fill layout="column" ng-cloak>
+        <header class="header" role="banner">
+            <figure class="hero">
+                <img src="images/hero-donar.jpg" alt="donar">
+                <figcaption>Foto: Luis Arango</figcaption>
+            </figure>
+            <div class="header-container">
+                <h1>Error 404 <i class="fa fa-exclamation-circle"></i></h1>
+            </div>
+        </header>
 
-    <div front-menu></div>
-    <main class="main-container error404-page" role="main">
-        <section class="section-container">
-            <h3>¡Ups! Algo salió mal <i class="fa fa-frown-o"></i></h3>
-            <p>Al parecer la página que estás buscando no existe o ya no está disponible. <br /> Ni hablar. ¡Te invitamos a participar!</p>
+        <div front-menu></div>
+        <main class="main-container error404-page" role="main">
+            <section class="section-container">
+                <h3>¡Ups! Algo salió mal <i class="fa fa-frown-o"></i></h3>
+                <p>Al parecer la página que estás buscando no existe o ya no está disponible. <br /> Ni hablar. ¡Te invitamos
+                    a participar!</p>
 
-            <ul class="action-btns-container">
-                <li><a ui-sref="donate" class="btn btn-yellow">Quiero donar <i class="fa fa-heart"></i></a></li>
-                <li><a ui-sref="deliver" class="btn btn-magenta">Quiero entregar <i class="fa fa-bicycle"></i></a></li>
-            </ul>
+                <ul class="action-btns-container">
+                    <li><a ui-sref="donate" class="btn btn-yellow">Quiero donar <i class="fa fa-heart"></i></a></li>
+                    <li><a ui-sref="deliver" class="btn btn-magenta">Quiero entregar <i class="fa fa-bicycle"></i></a></li>
+                </ul>
 
-        </section>
-    </main>
+            </section>
+        </main>
 
-    <foot-page></foot-page>
-</div>
+        <foot-page></foot-page>
+    </div>
+
+    <script src="https://use.fontawesome.com/83870c468a.js"></script>
+
+    <script src="js/app.min.js"></script>
+</body>
+
+</html>
