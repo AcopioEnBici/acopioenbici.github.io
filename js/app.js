@@ -32,7 +32,7 @@ angular.module("app")
         "$locationProvider",
         function($mdThemingProvider, $logProvider, $locationProvider){
             $logProvider.debugEnabled(true);
-            $locationProvider.html5Mode(true);
+            $locationProvider.html5Mode(false);
             
             $mdThemingProvider.theme('red')
                 .primaryPalette('red')
@@ -47,7 +47,8 @@ angular.module("app")
 angular.module("app")
     .constant('loginRedirectPath', 'admin.login')
     .constant('allowedOfflineStates', ['404','admin.login','admin.register','home','donate','deliver','admin.logout','chooseDonation','chooseCenter'])
-    .constant('adminStates', ['admin.volunteers','admin.donations'])
+    .constant('staffStates', ['admin.volunteers','admin.donations'])
+    .constant('adminStates', ['admin.staff'])
     .constant('volunteerStates', ['donate','deliver','chooseDonation','chooseCenter'])
     .constant('FB_CONFIG', {
         apiKey: "AIzaSyDR-aACSORClSwkE0CcZs8aAmKawIKDYH8",
@@ -64,6 +65,8 @@ angular.module("app")
         "$stateProvider",
         "$urlRouterProvider",
         function($stateProvider, $urlRouterProvider) {
+            $urlRouterProvider.when('', '/');
+            $urlRouterProvider.otherwise('/404');
             $stateProvider
                 .state('home', {
                     url: '/',
@@ -130,11 +133,16 @@ angular.module("app")
                     templateUrl: 'partials/admin/register.html',
                     controller: 'AdminRegisterCtrl'
                 })
+                .state('admin.staff', {
+                    url: '/staff',
+                    templateUrl: 'partials/admin/staff.html',
+                    controller: 'AdminStaffCtrl'
+                })
                 .state('404', {
                     url: '/404',
                     templateUrl: '404.html'
                 })
-              
+
                 // cruds
                 // .state('admin.cruds', {
                 //     url: '/cruds',
@@ -142,8 +150,8 @@ angular.module("app")
                 //     controller: 'CrudsCtrl'
                 // })
 
-            $urlRouterProvider.when('', '/');
-            $urlRouterProvider.otherwise('/404');
+            
+            
         }
     ]);
 
@@ -159,11 +167,12 @@ angular.module("app")
         "$timeout",
         "FB_CONFIG",
         "allowedOfflineStates",
+        "staffStates",
         "adminStates",
         "loginRedirectPath",
         "AppF",
         "$firebaseObject",
-        function($rootScope, $state, $log, $location, $localStorage, $timeout, config, states, adminStates, loginRedirectPath, F, $firebaseObject) {
+        function($rootScope, $state, $log, $location, $localStorage, $timeout, config, states, staffStates, adminStates, loginRedirectPath, F, $firebaseObject) {
             firebase.initializeApp(config);
 
             F.auth = firebase.auth();
@@ -179,13 +188,14 @@ angular.module("app")
                         e.preventDefault();
                     } 
                 } else {
+                    checkStaff(toState.name, e);
                     checkAdmin(toState.name, e);
                 }
             });
 
-            var checkAdmin = function(route, e){
-                if(isAdmin(route)){
-                    console.log(F.auth, "AUTH")
+            var checkStaff = function(route, e){
+                if(isStaff(route)){
+                    console.log(F.auth, "AUTH Staff")
                     if(F.user.providerData[0].providerId == 'twitter.com'){
                         $state.go('home');
                         $log.error('No tienes permiso para entrar a esta ruta')
@@ -194,9 +204,36 @@ angular.module("app")
                 }
             }
 
+            var checkAdmin = function(route, e){
+                if(isAdmin(route)){
+                    console.log(F.auth, "AUTH Admin")
+                    if(F.user.providerData[0].providerId == 'twitter.com'){
+                        $state.go('home');
+                        $log.error('No tienes permiso para entrar a esta ruta')
+                        e.preventDefault();
+                    }
+                    if(F.staffProfile){
+                        if(F.staffProfile.type == 'staff'){
+                            $state.go('admin.donations');
+                            $log.error('No tienes permiso para entrar a esta ruta')
+                            e.preventDefault();
+                        }   
+                    } else {
+                        firebase.database().ref('/users').child(F.user.uid).child('type').once('value', function(snap){
+                            var type = snap.val();
+                            if(type == 'staff'){
+                                $state.go('admin.donations');
+                                $log.error('No tienes permiso para entrar a esta ruta')
+                                e.preventDefault();
+                            }
+                        });
+                    }
+                }
+            }
+
             $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
                 // We can catch the error thrown when the $requireSignIn promise is rejected
-                console.log("WTF", error);
+                console.log("error de ruta", error);
                 // and redirect the user back to the home page
                 if (error === "AUTH_REQUIRED") {
                     $state.go("home");
@@ -217,6 +254,11 @@ angular.module("app")
                                 var profile = snap.val();
                                 if(profile) F.userProfile = profile;
                             });
+                        } else {
+                            firebase.database().ref('/users').child(user.uid).once('value', function(snap){
+                                var profileS = snap.val();
+                                if(profileS) F.staffProfile = profileS;
+                            });
                         }
                     }
                     // User signed in!
@@ -235,6 +277,14 @@ angular.module("app")
                     isPermitted = true;
                 }
                 return isPermitted;
+            }
+
+            function isStaff(route){
+                var isStaff = (staffStates.indexOf(route) !== -1);
+                if(!route){
+                    isPermitted = true;
+                }
+                return isStaff;
             }
 
             function isAdmin(route){
@@ -587,10 +637,12 @@ angular.module('app')
             $scope.auth = $firebaseAuth();
             $scope.admin = {};
             var root = firebase.database().ref('/')
-            
+
             $scope.register = function() {
                 AppF.loading = true;
                 $log.debug('register', $scope.credentials);
+                $scope.admin.type="staff";
+                $scope.admin.createdAt = moment().valueOf();
                 $scope.auth.$createUserWithEmailAndPassword($scope.admin.email, $scope.admin.password).then(function(user) {
                     $scope.saveProfile(user.uid).then(function(){
                         successAlert('Se creo el usuario, en cuanto sea aprobado por administración, podras entrar.')
@@ -599,7 +651,7 @@ angular.module('app')
                         errAlert(err);
                         AppF.loading = false;
                     });
-                    
+
                 }).catch(function(err){
                     errAlert(err);
                     AppF.loading = false;
@@ -615,6 +667,100 @@ angular.module('app')
             }
         }
     ]);
+
+'use strict';
+
+angular.module('app')
+    .controller('AdminStaffCtrl', [
+        "$rootScope",
+        "$scope",
+        "errAlertS",
+        "successAlertS",
+        "$firebaseArray",
+        "AppF",
+        "$log",
+        function($rootScope, $scope, errAlertS, successAlertS, $firebaseArray, F, $log) {
+            var initiated = false;
+            var root = firebase.database().ref("/");
+            $scope.users = [];
+            $scope.currentPage = 1;
+            $scope.selected = [];
+
+            var init = function() {
+                initiated = true;
+                $scope.users = $firebaseArray(root.child('users').orderByChild("type").equalTo("staff"));
+                $log.debug('Donation Ctrl initiated');
+            }
+
+            $scope.save = function(user){
+                $log.debug('saving', user);
+                user.updatedAt = moment().valueOf();
+                user.updatedBy = F.user.uid;
+                $scope.users.$save(user).then(function(){
+                    successAlertS('Se guardó registro');
+                }, errAlertS);
+            }
+
+            $scope.activate = function(user){
+                $log.debug('activate', user);
+                user.active = true;
+                $scope.save(user);
+            }
+
+            $scope.deactivate = function(user){
+                $log.debug('deactivate', user);
+                user.active = false;
+                $scope.save(user);
+            }
+
+            $scope.remove = function(user){
+                $log.debug("removing: ", user);
+                return $scope.users.$remove(user);
+            }
+
+            $scope.showRemoveDialog = function(ev){
+                $mdDialog.show(
+                    $mdDialog.confirm({
+                        onComplete: function afterShowAnimation() {
+                            var $dialog = angular.element(document.querySelector('md-dialog'));
+                            var $actionsSection = $dialog.find('md-dialog-actions');
+                            var $cancelButton = $actionsSection.children()[0];
+                            var $confirmButton = $actionsSection.children()[1];
+                            angular.element($confirmButton).addClass('md-raised md-warn');
+                            angular.element($cancelButton).addClass('md-raised');
+                        }
+                    })
+                    .title('Remover ' + $scope.selected.length + ' voluntarios?')
+                    .textContent('No podrá recuperar los datos')
+                    .ariaLabel('Lucky day')
+                    .targetEvent(event)
+                    .ok('Eliminar')
+                    .cancel('Cancelar')
+                ).then(function() {
+                    var count = 0;
+                    $log.debug("Deleting: ", $scope.selected);
+                    angular.forEach($scope.selected, function(record) {
+                        $scope.remove(record).then(function() {
+                            if (count == $scope.selected.length) {
+                                successAlert("Se borraron " + count + " voluntarios");
+                                $scope.selected = [];
+                            }
+                        });
+                    });
+                });
+            }
+
+            $rootScope.$on('loggedIn', function(event, logged) {
+                $log.debug(logged, "loggedIn?")
+                if (logged && !initiated) init();
+            });
+
+            if (F.user && !initiated) {
+                init();
+            }
+        }
+    ]);
+
 'use strict';
 
 angular.module('app')

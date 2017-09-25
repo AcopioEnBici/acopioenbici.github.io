@@ -1,9 +1,9 @@
 <md-toolbar md-scroll-shrink ng-if="true" class="md-tall md-primary md-hue-2" md-whiteframe="1" layout-align="center center">
         <div class="md-toolbar-tools">
-            <span flex><h3>Voluntarios</h3></span>
+            <span flex><h3>Staff</h3></span>
             <md-button ng-if="selected.length" ng-click="showRemoveDialog($event)" class="md-fab md-mini md-warn md-raised md-hue-2"
                 aria-label="Remove">
-                <md-icon aria-label="Borrar Voluntario" class="material-icons bolder">
+                <md-icon aria-label="Borrar Staff" class="material-icons bolder">
                     delete
                 </md-icon>
             </md-button>
@@ -22,25 +22,23 @@
             <table md-table md-row-select ng-model='selected'>
                 <thead md-head>
                     <tr md-row>
-                        <th md-column md-order-by='date'>Fecha</th>
-                        <th md-column md-order-by='name'>Nombre</th>
-                        <th md-column md-order-by='capacity'>Capacidad de Mochila</th>
+                      <th md-column md-order-by='name'>Fecha Solicitud</th>
+                      <th md-column md-order-by='name'>Nombre</th>
                         <th md-column md-order-by='active'>Activo</th>
                         <th md-column>Acciones</th>
                     </tr>
                 </thead>
                 <tbody md-body>
-                    <tr md-row ng-repeat="volunteer in (filteredItems = (volunteers | filter:search | orderBy:'date')) | limitTo: F.paginate: (currentPage - 1) * F.paginate" md-select='volunteer' md-select-id='$id' class="noright">
-                        <td md-cell>{{volunteer.updatedAt | date: 'dd/MM/yyyy HH:mm'}}</td>
-                        <td md-cell>{{volunteer.name}}</td>
-                        <td md-cell>{{volunteer.capacity}}</td>
-                        <td md-cell>{{volunteer.active ? 'Si' : 'No'}}</td>
+                    <tr md-row ng-repeat="person in (filteredItems = (users | filter:search | orderBy:'createdAt')) | limitTo: F.paginate: (currentPage - 1) * F.paginate" md-select='person' md-select-id='$id' class="noright">
+                      <td md-cell>{{person.createdAt | date: 'dd/MM/yyyy HH:mm'}}</td>
+                        <td md-cell>{{person.email}}</td>
+                        <td md-cell>{{person.active ? 'Si' : 'No'}}</td>
                         <td md-cell>
-                            <md-button ng-show='!volunteer.active' class="md-primary md-mini md-fav" ng-click="activate(volunteer)">
+                            <md-button ng-show='!person.active' class="md-primary md-mini md-fav" ng-click="activate(person)">
                                 <md-tooltip md-direction="left">Activar</md-tooltip>
                                 <md-icon>check</md-icon>
                             </md-button>
-                            <md-button ng-show='volunteer.active' class="md-warn md-mini md-fav" ng-click="deactivate(volunteer)">
+                            <md-button ng-show='person.active' class="md-warn md-mini md-fav" ng-click="deactivate(person)">
                                 <md-tooltip md-direction="left">Desactivar</md-tooltip>
                                 <md-icon>close</md-icon>
                             </md-button>

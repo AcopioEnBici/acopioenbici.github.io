@@ -1,9 +1,8 @@
 <!doctype html>
-<html class="no-js" ng-app="app">
+<html class="no-js">
 
 <head>
     <meta charset="utf-8">
-    <base href="/">
     <title>Acopio en Bici - 404</title>
     <meta name="description" content="sitio de ayuda y donaciones para temblor CDMX 2017, acopio en bici">
     <meta name="viewport" content="width=device-width">
@@ -23,24 +22,19 @@
     <!-- Server -->
     <!-- <script src="https://maps.googleapis.com/maps/api/js?key=&libraries=places"></script> -->
     <!-- Local -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJnOnSebsS7tgMQ7h2Xj5jlkYHb5_rna0&libraries=places"></script>
+    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJnOnSebsS7tgMQ7h2Xj5jlkYHb5_rna0&libraries=places"></script> -->
 
     <!-- endbmaps -->
     <!-- Required libraries scripts -->
     <!-- <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script> -->
-    <script src="js/required.min.js"></script>
+    <!-- <script src="js/required.min.js"></script> -->
     <!-- Endrequired -->
 </head>
 
-<body ng-controller="GeneralCtrl">
+<body>
     <!--[if lt IE 10]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-    <div class="splash" ng-cloak>
-        <div class="heart-container">
-            <i class="fa fa-heart success"></i>
-        </div>
-    </div>
     <div class="landing full-height" flex layout-fill layout="column" ng-cloak>
         <header class="header" role="banner">
             <figure class="hero">
@@ -52,7 +46,22 @@
             </div>
         </header>
 
-        <div front-menu></div>
+        <nav class="nav" role="menubar">
+            <a class="logo">
+                    <img src="images/acopioenbici-logo.svg" alt="Acopio en Bici">
+                </a>
+            <ul>
+                <li><a href="https://acopioenbici.github.io">Inicio</a></li>
+                <li><a href="https://acopioenbici.github.io/donate">Quiero Donar</a></li>
+                <li><a href="https://acopioenbici.github.io/deliver">Quiero Entregar</a></li>
+                <li><a target="_blanc" href=""><i class="fa fa-twitter-square"></i></a></li>
+                <li><a target="_blanc" href=""><i class="fa fa-facebook-square"></i></a></li>
+            </ul>
+            <a hide-gt-xs class="nav-trigger active" ng-click="triggerMenu()">
+                <md-icon id="menu" class="material-icons">menu</md-icon>
+                <md-icon id="close" class="material-icons">close</md-icon>
+            </a>
+        </nav>
         <main class="main-container error404-page" role="main">
             <section class="section-container">
                 <h3>¡Ups! Algo salió mal <i class="fa fa-frown-o"></i></h3>
@@ -60,19 +69,26 @@
                     a participar!</p>
 
                 <ul class="action-btns-container">
-                    <li><a ui-sref="donate" class="btn btn-yellow">Quiero donar <i class="fa fa-heart"></i></a></li>
-                    <li><a ui-sref="deliver" class="btn btn-magenta">Quiero entregar <i class="fa fa-bicycle"></i></a></li>
+                    <li><a href="https://acopioenbici.github.io/donate" class="btn btn-yellow">Quiero donar <i class="fa fa-heart"></i></a></li>
+                    <li><a href="https://acopioenbici.github.io/deliver" class="btn btn-magenta">Quiero entregar <i class="fa fa-bicycle"></i></a></li>
                 </ul>
 
             </section>
         </main>
 
-        <foot-page></foot-page>
+        <footer class="footer" role="footer">
+            <div class="footer-container">
+                <a href="" class="logo">
+                    <img src="images/acopioenbici-logo-dark.svg" alt="Acopio en Bici">
+                </a>
+                <p>&copy; 2017 Acopio en Bici. <a href="#">Aviso de Privacidad</a>. Fotos por Luis Arango.</p>
+            </div>
+        </footer>
     </div>
 
     <script src="https://use.fontawesome.com/83870c468a.js"></script>
 
-    <script src="js/app.min.js"></script>
+    <!-- <script src="js/app.min.js"></script> -->
 </body>
 
 </html>
