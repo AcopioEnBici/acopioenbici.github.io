@@ -1,4 +1,3 @@
-<menu-sidebar-left></menu-sidebar-left>
 <div class="landing full-height" flex layout-fill layout="column" ng-cloak>
     <md-content flex>
         <header class="header" role="banner">
@@ -11,7 +10,7 @@
             </div>
         </header>
 
-        <div front-menu></div>
+        <div front-menu active="deliver"></div>
         <div class="main-container" role="main">
             <div partial-loading></div>
             <!-- Si está logeado con twitter y ya se registro -->
@@ -50,7 +49,7 @@
                     </ng-map>
                     <div layout="row" class="md-padding">
                         <div flex>
-                            <md-button class="md-primary" ng-click="deliverDonation()">Entregar</md-button>
+                            <md-button class="md-primary" ng-click="deliverDonation()">Entregado</md-button>
                         </div>
                     </div>
                 </div>
@@ -62,5 +61,8 @@
                 <md-button ui-sref="admin.volunteers">Ver voluntarios</md-button>
             </div>
         </div>
+
+        <br>
+        <foot-page></foot-page>
     </md-content>
 </div>

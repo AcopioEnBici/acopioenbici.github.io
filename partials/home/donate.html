@@ -1,102 +1,86 @@
-<menu-sidebar-left></menu-sidebar-left>
 <div class="landing full-height" flex layout-fill layout="column" ng-cloak>
-    <md-content flex>
-        <header class="header" role="banner">
-            <figure class="hero">
-                <img src="images/hero-donar.jpg" alt="donar">
-                <figcaption>Foto: Luis Arango</figcaption>
-            </figure>
-            <div class="header-container">
-                <h1>Quiero Donar <i class="fa fa-heart"></i></h1>
-            </div>
-        </header>
+  <md-content flex>
+    <header class="header" role="banner">
+      <figure class="hero">
+        <img src="images/hero-donar.jpg" alt="donar">
+        <figcaption>Foto: Luis Arango</figcaption>
+      </figure>
+      <div class="header-container">
+        <h1>Quiero Donar <i class="fa fa-heart"></i></h1>
+      </div>
+    </header>
 
-        <nav class="nav" role="menubar">
-            <a class="logo">
-                <img src="images/acopioenbici-logo.svg" alt="Acopio en Bici">
-            </a>
-            <ul>
-                <li><a ui-sref="home">Inicio</a></li>
-                <li class="active"><a>Quiero Donar</a></li>
-                <li><a ui-sref="deliver">Quiero Entregar</a></li>
-                <li><a target="_blanc" href=""><i class="fa fa-twitter-square"></i></a></li>
-                <li><a target="_blanc" href=""><i class="fa fa-facebook-square"></i></a></li>
-            </ul>
-            <a hide-gt-xs class="nav-trigger active" ng-click="triggerMenu()">
-                <md-icon id="menu" class="material-icons">menu</md-icon>
-                <md-icon id="close" class="material-icons">close</md-icon>
-            </a>
-        </nav>
-        <div class="main-container" role="main">
-            <!-- Formulario para donacion -->
-            <section class="form-container" ng-if="!donationSent">
-                <h3>¡México te necesita hoy!</h3>
-                <p>Por favor llena el formulario con tu nombre, e indica tu ubicación en el mapa.</p>
-                <form name="donateForm" class="form" novalidate>
-                    <div class="form-row">
-                        <div class="form-field" ng-class="{'error': donateForm.name.$invalid}">
-                            <label for="name">Nombre Completo <span>*</span></label>
-                            <div class="field-container">
-                                <input name="name" type="text" ng-model="donator.name" required />
-                                <i class="fa fa-user"></i>
-                            </div>
-                            <span class="error-message" ng-show="donateForm.name.$invalid">
+    <div front-menu active="donate"></div>
+    <div class="main-container" role="main">
+      <!-- Formulario para donacion -->
+      <section class="form-container" ng-if="!donationSent">
+        <h3>¡México te necesita hoy!</h3>
+        <p>Por favor llena el formulario con tu nombre, e indica tu ubicación en el mapa.</p>
+        <form name="donateForm" class="form" novalidate>
+          <div class="form-row">
+            <div class="form-field" ng-class="{'error': donateForm.name.$invalid}">
+              <label for="name">Nombre Completo <span>*</span></label>
+              <div class="field-container">
+                <input name="name" type="text" ng-model="donator.name" required />
+                <i class="fa fa-user"></i>
+              </div>
+              <span class="error-message" ng-show="donateForm.name.$invalid">
                                 Campo obligatorio
                             </span>
-                        </div>
-                        <div class="form-field" ng-class="{'error': donateForm.email.$invalid}">
-                            <label for="email">Correo Electrónico <span>*</span></label>
-                            <div class="field-container">
-                                <input name="email" type="email" ng-model="donator.email" required />
-                                <i class="fa fa-at"></i>
-                            </div>
-                            <span class="error-message" ng-show="donateForm.name.$invalid">
+            </div>
+            <div class="form-field" ng-class="{'error': donateForm.email.$invalid}">
+              <label for="email">Correo Electrónico <span>*</span></label>
+              <div class="field-container">
+                <input name="email" type="email" ng-model="donator.email" required />
+                <i class="fa fa-at"></i>
+              </div>
+              <span class="error-message" ng-show="donateForm.name.$invalid">
                                 Campo obligatorio
                             </span>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-field">
-                            <label for="twitter">Twitter</label>
-                            <div class="field-container">
-                                <input name="twitter" type="text" ng-model="donator.twitter" />
-                                <i class="fa fa-twitter"></i>
-                            </div>
-                        </div>
-                        <div class="form-field">
-                            <label for="phone">Teléfono</label>
-                            <div class="field-container">
-                                <input name="phone" type="tel" ng-model="donator.phone" />
-                                <i class="fa fa-mobile"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-field" ng-class="{'error': donateForm.sizeOfBag.$invalid}">
-                            <label for="sizeOfBag">Peso y Tamaño de la Donación<span>*</span></label>
-                            <div class="field-container">
-                                <input name="sizeOfBag" type="text" ng-model="donator.sizeOfBag" required  placeholder="ej: 20 kg, 40 cm * 20 cm" />
-                            </div>
-                            <span class="error-message" ng-show="donateForm.sizeOfBag.$invalid">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-field">
+              <label for="twitter">Twitter</label>
+              <div class="field-container">
+                <input name="twitter" type="text" ng-model="donator.twitter" />
+                <i class="fa fa-twitter"></i>
+              </div>
+            </div>
+            <div class="form-field">
+              <label for="phone">Teléfono</label>
+              <div class="field-container">
+                <input name="phone" type="tel" ng-model="donator.phone" />
+                <i class="fa fa-mobile"></i>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-field" ng-class="{'error': donateForm.sizeOfBag.$invalid}">
+              <label for="sizeOfBag">Peso y Tamaño de la Donación<span>*</span></label>
+              <div class="field-container">
+                <input name="sizeOfBag" type="text" ng-model="donator.sizeOfBag" required placeholder="ej: 20 kg, 40 cm * 20 cm" />
+              </div>
+              <span class="error-message" ng-show="donateForm.sizeOfBag.$invalid">
                                 Campo obligatorio
                             </span>
-                        </div>
-                        <div class="form-field" ng-class="{'error': donateForm.deliverSchedule.$invalid}">
-                            <label for="deliverSchedule">Horario de disponibilidad<span>*</span></label>
-                            <div class="field-container">
-                                <input name="deliverSchedule" type="text" ng-model="donator.deliverSchedule" placeholder="ej: entre 4:00 pm y 7:00 pm" required />
-                                <i class="fa fa-clock"></i>
-                            </div>
-                            <span class="error-message" ng-show="donateForm.deliverSchedule.$invalid">
+            </div>
+            <div class="form-field" ng-class="{'error': donateForm.deliverSchedule.$invalid}">
+              <label for="deliverSchedule">Horario de disponibilidad<span>*</span></label>
+              <div class="field-container">
+                <input name="deliverSchedule" type="text" ng-model="donator.deliverSchedule" placeholder="ej: entre 4:00 pm y 7:00 pm" required />
+                <i class="fa fa-clock"></i>
+              </div>
+              <span class="error-message" ng-show="donateForm.deliverSchedule.$invalid">
                                 Campo obligatorio
                             </span>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-field" ng-class="{'error': donateForm.categoryOfDonations.$invalid}">
-                            <label for="categoryOfDonations">Tipo de donación<span>*</span></label>
-                            <div class="field-container select-container">
-                                <select name="categoryOfDonations" ng-model="donator.categoryOfDonations" required class="tipo-donacion">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-field" ng-class="{'error': donateForm.categoryOfDonations.$invalid}">
+              <label for="categoryOfDonations">Tipo de donación<span>*</span></label>
+              <div class="field-container select-container">
+                <select name="categoryOfDonations" ng-model="donator.categoryOfDonations" required class="tipo-donacion">
                                     <option ng-selected="!donator.categoryOfDonations">Selecciona una opción</option>
                                     <option value="Agua">Agua</option>
                                     <option value="Comida">Comida</option>
@@ -104,79 +88,58 @@
                                     <option value="Suero">Suero</option>
                                     <option value="Baterías">Baterías</option>
                                 </select>
-                                <i class="fa fa-caret-down"></i>
-                                <i class="fa fa-caret-up"></i>
-                            </div>
-                            <span class="error-message" ng-show="donateForm.categoryOfDonations.$invalid">
+                <i class="fa fa-caret-down"></i>
+                <i class="fa fa-caret-up"></i>
+              </div>
+              <span class="error-message" ng-show="donateForm.categoryOfDonations.$invalid">
                                 Campo obligatorio
                             </span>
-                        </div>
-                        <div class="form-field" ng-class="{'error': donateForm.secretPassword.$invalid}">
-                            <label for="secretPassword">Palabra Secreta<span>*</span></label>
-                            <div class="field-container">
-                                <input name="secretPassword" type="text" ng-model="donator.secretPassword" placeholder="ej: Palabra secreta para recoger la donación" required />
-                                <i class="fa fa-user-secret"></i>
-                            </div>
-                            <span class="error-message" ng-show="donateForm.secretPassword.$invalid">
-                                Campo obligatorio
-                            </span>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-field">
-                            <label for="ubication">Ubicaci&oacute;nes de recolecci&oacute;n </label>
-                            <input id="addressInput" placeholder="Introduce un lugar" ng-model="addressInput" places-auto-complete types="['geocode']" name="ubication" on-place-changed="getCoords()" component-restrictions="{country:'mx'}"
-                            />
-                        </div>
-                        <div class="form-field" ng-class="{'error': donateForm.address.$invalid}">
-                            <label for="address">Dirección Completa <span>*</span></label>
-                            <div class="field-container">
-                                <input type="text" name="address" ng-model="donator.address" required />
-                                <i class="fa fa-map-marker"></i>
-                            </div>
-                            <span class="error-message" ng-show="donateForm.address.$invalid">
-                                Campo obligatorio
-                            </span>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <ng-map id="map">
-                            <marker centered="true"  position="current-location" draggable="true"></marker>
-                        </ng-map>
-                    </div>
-                    <div class="form-row">
-                        <br><br>
-                        <div class="centered">
-                            <button ng-disabled="donateForm.$invalid" class="btn btn-send" ng-click="save()">Enviar mis datos <i class="fa fa-paper-plane"></i></button>
-                        </div>
-                    </div>
-                </form>
-            </section>
-            <!-- Agradecimiento ya que el usuario donó -->
-            <section class="form-container" ng-if="donationSent">
-                <div class="form-success">
-                    <i class="fa fa-heart success"></i>
-                    <h3>¡Muchísimas gracias por ayudar!</h3>
-                    <p>
-                        Un miembro del staff se pondrá en contacto contigo para recoger tu donación. <br> Si conoces gente
-                        que puede ayudar, cómparte con ellos esta iniciativa.
-                    </p>
-                    <ul class="social-share">
-                        <li><a target="_blanc" href="#"><span class="fa fa-facebook-square"></span></a></li>
-                        <li><a target="_blanc" href="#"><span class="fa fa-twitter-square"></span></a></li>
-                        <li><a target="_blanc" href="#"><span class="fa fa-envelope-square"></span></a></li>
-                    </ul>
-                </div>
-            </section>
-        </div>
-        <br>
-        <footer class="footer" role="footer" flex="no-grow">
-            <div class="footer-container">
-                <a href="#" class="logo">
-                    <img src="images/acopioenbici-logo-dark.svg" alt="Acopio en Bici">
-                </a>
-                <p>&copy; 2017 Acopio en Bici. <a href="#">Aviso de Privacidad</a>. Fotos por Luis Arango.</p>
             </div>
-        </footer>
-    </md-content>
+            <div class="form-field" ng-class="{'error': donateForm.secretPassword.$invalid}">
+              <label for="secretPassword">Palabra Secreta<span>*</span></label>
+              <div class="field-container">
+                <input name="secretPassword" type="text" ng-model="donator.secretPassword" placeholder="ej: Palabra secreta para recoger la donación" required />
+                <i class="fa fa-user-secret"></i>
+              </div>
+              <span class="error-message" ng-show="donateForm.secretPassword.$invalid">
+                                Campo obligatorio
+                            </span>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-field full-field" >
+              <label for="ubication">Ubicaci&oacute;nes de recolecci&oacute;n </label>
+              <input id="addressIn" class="controls" type="text" placeholder="Ingresa una direcci&oacute;n" ng-model="addressInput">
+            </div>
+          </div>
+          <div class="form-row">
+            <div id="map" class="map" flex layout-fill></div>
+          </div>
+          <div class="form-row">
+            <br><br>
+            <div class="centered">
+              <button ng-disabled="donateForm.$invalid" class="btn btn-send" ng-click="save()">Enviar mis datos <i class="fa fa-paper-plane"></i></button>
+            </div>
+          </div>
+        </form>
+      </section>
+      <!-- Agradecimiento ya que el usuario donó -->
+      <section class="form-container" ng-if="donationSent">
+        <div class="form-success">
+          <i class="fa fa-heart success"></i>
+          <h3>¡Muchísimas gracias por ayudar!</h3>
+          <p>
+            Un miembro del staff se pondrá en contacto contigo para recoger tu donación. <br> Si conoces gente que puede ayudar, cómparte con ellos esta iniciativa.
+          </p>
+          <ul class="social-share">
+            <li><a target="_blanc" href="#"><span class="fa fa-facebook-square"></span></a></li>
+            <li><a target="_blanc" href="#"><span class="fa fa-twitter-square"></span></a></li>
+            <li><a target="_blanc" href="#"><span class="fa fa-envelope-square"></span></a></li>
+          </ul>
+        </div>
+      </section>
+    </div>
+    <br>
+    <foot-page></foot-page>
+  </md-content>
 </div>

@@ -1,9 +1,8 @@
-<menu-sidebar-left></menu-sidebar-left>
 <div class="landing full-height" flex layout-fill layout="column" ng-cloak>
     <md-content flex>
         <header class="header" role="banner">
             <figure class="hero">
-                <img src="images/hero-donar.jpg" alt="donar">
+                <img src="images/hero-interna-2.jpg" alt="voluntario">
                 <figcaption>Foto: Luis Arango</figcaption>
             </figure>
             <div class="header-container">
@@ -13,43 +12,79 @@
 
         <div front-menu active="deliver"></div>
         <div class="main-container" role="main">
-            <div partial-loading></div>
-            <!-- Si esta logeado con twitter y no se ha registrado -->
+          <div partial-loading></div>
+          <!-- Si esta logeado con twitter y no se ha registrado -->
+          <section class="section-container center">
             <div flex layout="column" ng-show="F.user && volunteer.provider == 'twitter' && !volunteer.registeredTovolunteer">
-                <md-toolbar class="md-padding" style="background: rgba(0,0,0,0.7);">
-                    Hola {{F.user.displayName}} favor de llenar el formulario
-                </md-toolbar>
-                <form name="volunteerForm" novalidate class="md-padding">
-                    <md-input-container class="md-block" flex>
-                        <label>Nombre</label>
-                        <input name="name" type="text" ng-model="volunteer.name" required />
-                    </md-input-container>
-                    <md-input-container class="md-block" flex>
-                        <label>Capacidad de carga en mochila que puedes llevar</label>
-                        <input name="capacity" type="text" ng-model="volunteer.capacity" required />
-                    </md-input-container>
-                    <br>
-                    <div layour="row">
-                        <div flex></div>
-                        <md-button ng-disabled="volunteerForm.$invalid" class="md-primary md-fab" ng-click="save()">
-                            <md-icon>save</md-icon>
-                        </md-button>
+              <md-toolbar>
+                  <h3>Estás a una rodada de ayudar a México</h3>
+                  <p>Hola {{F.user.displayName}}, muchas gracias por apoyar esta iniciativa ciudadana. Por favor, llena el siguiente formulario para completar tu registro.</p>
+              </md-toolbar>
+
+              <div flex layout="column" ng-show="F.user && volunteer.provider == 'twitter' && !volunteer.registeredTovolunteer">
+                <form name="volunteerForm" novalidate class="form">
+                  <div class="form-row">
+                    <div class="form-field">
+                        <md-input-container flex>
+                            <label for="">Nombre Completo <span>*</span></label>
+                            <div class="field-container">
+                                <input name="name" type="text" ng-model="volunteer.name" required />
+                                <i class="fa fa-user"></i>
+                            </div>
+                        </md-input-container>
                     </div>
+                    <div class="form-field">
+                      <md-input-container class="field-container" flex>
+                        <label for="">Peso y Dimension de la Donacion <span>*</span></label>
+                        <div class="field-container">
+                          <input name="capacity" type="text" ng-model="volunteer.capacity" placeholder="10kg - 30cm ancho, 40 largo, 60 alto" required />
+                        </div>
+                      </md-input-container>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                      <div class="form-field">
+                          <md-button ng-disabled="volunteerForm.$invalid" class="btn btn-send" ng-click="save()">
+                              Enviar mis datos <i class="fa fa-paper-plane"></i>
+                          </md-button>
+                      </div>
+                  </div>
                 </form>
+              </div>
             </div>
-            <!-- Si no esta logeado -->
-            <div flex layout="column" ng-show="!F.user">
-                <md-button class="md-primary twitterButton" ng-click="loginWithTwitter()">
-                    Continuar con Twitter
-                    <md-icon>twitter-box</md-icon>
-                </md-button>
-            </div>
-            <!-- Si está logeado como admin -->
-            <div flex layout="column" ng-show="F.user && volunteer.provider !== 'twitter'">
-                <h3>Usted es administrador</h3>
-                <br><br>
-                <md-button ui-sref="admin.volunteers">Ver voluntarios</md-button>
-            </div>
+          </section>
+
+          <!-- Si no esta logeado -->
+          <section flex layout="column" ng-show="!F.user" class="section-container center">
+              <h3>¡Vamos a pedalear!</h3>
+              <p>Para poder inscribirte a nuestra plataforma de ayuda, por favor regístrate presionando el botón para continuar con Twitter. Si ya estás registrado, solo presiona el botón para iniciar sesión.</p>
+
+              <ul class="action-btns-container">
+                  <li>
+                      <md-button class="btn btn-magenta" ng-click="loginWithTwitter()">
+                          Registrarme con Twitter
+                          <i class="fa fa-twitter"></i>
+                      </md-button>
+                  </li>
+                  <li>
+                      <md-button class="btn btn-yellow" ng-click="loginWithTwitter()">
+                          Iniciar sesión
+                          <i class="fa fa-sign-in"></i>
+                      </md-button>
+                  </li>
+              </ul>
+          </section>
+
+          <!-- Si está logeado como admin -->
+          <section flex layout="column" ng-show="F.user && volunteer.provider !== 'twitter'" class="section-container center">
+              <h3>¡Hola administrador! <i class="fa fa-smile-o"></i></h3>
+              <p>Bienvenido de nuevo {{F.user.displayName}}. Tengo voluntarios que mostrarte.</p>
+
+              <md-button ui-sref="admin.volunteers" class="btn btn-magenta">Ver voluntarios <i class="fa fa-bicycle"></i></md-button>
+          </section>
         </div>
+        
+        <br>
+        <foot-page></foot-page>
     </md-content>
 </div>

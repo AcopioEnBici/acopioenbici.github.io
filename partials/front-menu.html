@@ -4,8 +4,9 @@
         </a>
     <ul>
         <li><a ui-sref="home">Inicio</a></li>
-        <li ng-class="{'active': active == 'donate'}"><a>Quiero Donar</a></li>
+        <li ng-class="{'active': active == 'donate'}"><a ui-sref="donate">Quiero Donar</a></li>
         <li ng-class="{'active': active == 'deliver'}"><a ui-sref="deliver">Quiero Entregar</a></li>
+        <li ng-if="volunteerStates.indexOf(state.current.name) !== -1 && F.user"><a ui-sref="admin.logout">Salir</a></li>
         <li><a target="_blanc" href=""><i class="fa fa-twitter-square"></i></a></li>
         <li><a target="_blanc" href=""><i class="fa fa-facebook-square"></i></a></li>
     </ul>

@@ -46,8 +46,9 @@ angular.module("app")
 
 angular.module("app")
     .constant('loginRedirectPath', 'admin.login')
-    .constant('allowedOfflineStates', ['admin.login','admin.register','home','donate','deliver','admin.logout','chooseDonation','chooseCenter'])
+    .constant('allowedOfflineStates', ['404','admin.login','admin.register','home','donate','deliver','admin.logout','chooseDonation','chooseCenter'])
     .constant('adminStates', ['admin.volunteers','admin.donations'])
+    .constant('volunteerStates', ['donate','deliver','chooseDonation','chooseCenter'])
     .constant('FB_CONFIG', {
         apiKey: "AIzaSyDR-aACSORClSwkE0CcZs8aAmKawIKDYH8",
         authDomain: "acopio-en-bici.firebaseapp.com",
@@ -120,7 +121,7 @@ angular.module("app")
                     controller: 'AdminMainCtrl'
                 })
                 .state('admin.logout', {
-                    url: '/login',
+                    url: '/logout',
                     templateUrl: 'partials/admin/logout.html',
                     controller: 'AdminLogoutCtrl'
                 })
@@ -128,6 +129,10 @@ angular.module("app")
                     url: '/registro',
                     templateUrl: 'partials/admin/register.html',
                     controller: 'AdminRegisterCtrl'
+                })
+                .state('404', {
+                    url: '/404',
+                    templateUrl: '404.html'
                 })
               
                 // cruds
@@ -137,7 +142,7 @@ angular.module("app")
                 //     controller: 'CrudsCtrl'
                 // })
 
-            $urlRouterProvider.otherwise('/inicio');
+            $urlRouterProvider.otherwise('/404');
         }
     ]);
 
@@ -756,7 +761,7 @@ angular.module('app')
                                     }
                                     initiated = true;
                                 });
-                                
+
                             }
                         }
                     }
@@ -765,8 +770,8 @@ angular.module('app')
 
             /**
              * Guarda los cambios que tenga selectedDonation y crea una alera con un mensaje de exito
-             * @param {*} donation 
-             * @param string successMsg 
+             * @param {*} donation
+             * @param string successMsg
              */
             var saveDonation = function(donation, successMsg){
                 var promise = $q.defer();
@@ -790,8 +795,8 @@ angular.module('app')
 
             /**
              * Guarda una propiedad y valor especificos del voluntario logeado
-             * @param {*} value 
-             * @param string prop 
+             * @param {*} value
+             * @param string prop
              */
             var saveVolunteer = function(value, prop){
                 console.log(value, prop, 'saving volunteer');
@@ -800,7 +805,7 @@ angular.module('app')
 
             /**
              * Se checa si el user logeado es un voluntario o aun no ha sido creado
-             * @param string uid 
+             * @param string uid
              */
             var checkIfUserExist = function(uid){
                 var promise = $q.defer();
@@ -829,7 +834,7 @@ angular.module('app')
 
             /**
              * Trae a $scope.selectedDonation la donacion
-             * @param string donationId 
+             * @param string donationId
              */
             var getSelectedDonation = function(donationId){
                 console.log("getSelectedDonation", donationId);
@@ -877,7 +882,7 @@ angular.module('app')
                         }
                     }
                     $scope.loading = false;
-        
+
                     google.maps.event.addListenerOnce($scope.map, 'idle', function() {
                         google.maps.event.trigger($scope.map, 'resize');
                         $scope.map.setCenter(latlng);
@@ -888,7 +893,7 @@ angular.module('app')
             /**
              * Se inicializa el mapa
              */
-            var getMapInfo = function(){ 
+            var getMapInfo = function(){
                 $scope.centersAvailable = $firebaseArray(root.child('centers'));
                 $scope.centersAvailable.$loaded().then(function(){
                     initMap();
@@ -917,7 +922,7 @@ angular.module('app')
                 saveVolunteer(null, 'selectedDonation').then(function(){
                     saveDonation($scope.selectedDonation, 'Se canceló que recogieras esa donación').then(function(){
                         $scope.selectedDonation = false;
-                        $state.go('chooseDonation'); // se regresa al paso anterior   
+                        $state.go('chooseDonation'); // se regresa al paso anterior
                     });
                 });
             }
@@ -939,13 +944,13 @@ angular.module('app')
             }
 
             /**
-             * Se inicializa el mapa para ponerlo en scope 
+             * Se inicializa el mapa para ponerlo en scope
              * Probablemente necesitemos hacer lo mismo con los otros mapas
              */
             NgMap.getMap("map").then(function(evtMap){
                 $scope.map = evtMap;
             });
-            
+
             /**
              * En esta parte detectamos cuando se logea para iniciar el ctrl
              */
@@ -978,6 +983,7 @@ angular.module('app')
             });
         }
     ]);
+
 'use strict';
 
 angular.module('app')
@@ -1031,7 +1037,7 @@ angular.module('app')
                                     }
                                     initiated = true;
                                 });
-                                
+
                             }
                         }
                     }
@@ -1040,8 +1046,8 @@ angular.module('app')
 
             /**
              * Guarda los cambios que tenga selectedDonation y crea una alera con un mensaje de exito
-             * @param {*} donation 
-             * @param string successMsg 
+             * @param {*} donation
+             * @param string successMsg
              */
             var saveDonation = function(donation, successMsg){
                 var promise = $q.defer();
@@ -1065,8 +1071,8 @@ angular.module('app')
 
             /**
              * Guarda una propiedad y valor especificos del voluntario logeado
-             * @param {*} value 
-             * @param string prop 
+             * @param {*} value
+             * @param string prop
              */
             var saveVolunteer = function(value, prop){
                 console.log(value, prop, 'saving volunteer');
@@ -1075,7 +1081,7 @@ angular.module('app')
 
             /**
              * Se checa si el user logeado es un voluntario o aun no ha sido creado
-             * @param string uid 
+             * @param string uid
              */
             var checkIfUserExist = function(uid){
                 var promise = $q.defer();
@@ -1095,7 +1101,7 @@ angular.module('app')
 
             /**
              * Trae a $scope.selectedDonation la donacion
-             * @param string donationId 
+             * @param string donationId
              */
             var getSelectedDonation = function(donationId){
                 console.log("SIP", donationId);
@@ -1109,6 +1115,7 @@ angular.module('app')
                 });
             }
 
+            //FACTORIZAR
             var addMarker = function(lat, lng, name, place){
                 var marker = new google.maps.Marker({
                     position: new google.maps.LatLng(lat,lng),
@@ -1134,7 +1141,7 @@ angular.module('app')
                         var donation = $scope.nearestDonations[d];
                         addMarker(donation.latitude, donation.longitude, donation.name + ' - ' + donation.categoryOfDonations, donation);
                     }
-        
+
                     $scope.loading = false;
                     google.maps.event.addListenerOnce($scope.map, 'idle', function() {
                         google.maps.event.trigger($scope.map, 'resize');
@@ -1146,7 +1153,7 @@ angular.module('app')
             /**
              * Se inicializa el mapa
              */
-            var getMapInfo = function(){ 
+            var getMapInfo = function(){
                 $scope.donationsAvailable = $firebaseArray(root.child('donations').orderByChild('status').equalTo('esperando'));
                 $scope.donationsAvailable.$loaded().then(function(){
                     initMap();
@@ -1186,7 +1193,7 @@ angular.module('app')
                     saveDonation($scope.selectedDonation, 'Se canceló que recogieras esa donación').then(function(){
                         $scope.selectedDonation = false;
                     });
-                    
+
                 });
             }
 
@@ -1237,6 +1244,7 @@ angular.module('app')
             });
         }
     ]);
+
 'use strict';
 
 angular.module('app')
@@ -1481,15 +1489,19 @@ angular.module('app')
         "errAlertS",
         "successAlertS",
         "NgMap",
-        function($rootScope, $scope, errAlertS, successAlertS, NgMap) {
+        "AppF",
+        function($rootScope, $scope, errAlertS, successAlertS, NgMap,F) {
             var initiated = false;
             $scope.map;
             var root = firebase.database().ref("/");
             $scope.donator = {};
             $scope.donationSent = false;
+            $scope.marker;
 
             var init = function() {
                 initiated = true;
+                // revisar el timeout
+                setTimeout(initMap,1000);
             }
 
             var thanks = function(){
@@ -1497,25 +1509,9 @@ angular.module('app')
                 $scope.$apply();
             }
 
-            //Victor:Para inicializar el mapa se tiene que poner el ID que se tiene en el template
-            NgMap.getMap("map").then(function(evtMap){
-              $scope.map = evtMap;
-            });
-
-            //Victor: funcion para obtener longitud y latitud
-            $scope.getGrabPosition = function(){
-              var position = $scope.map.markers[0].getPosition();
-              return {
-                "lat": position.lat(),
-                "lng": position.lng()
-              }
-            }
 
             $scope.save = function(){
-                var position = $scope.getGrabPosition();
                 $scope.donator.createdAt = moment().valueOf();
-                $scope.donator.latitude = position.lat;
-                $scope.donator.longitude = position.lng;
                 $scope.donator.status = 'esperando';
                 console.log('saving', $scope.donator);
                 root.child('donations').push($scope.donator).then(function(){
@@ -1527,14 +1523,117 @@ angular.module('app')
                 console.log('ubicating me');
             }
 
-            $scope.getCoords = function() {
-              //TODO: Revisar esta variable para que lo aplique con el modelo de addressInput
-              var value24 = document.getElementById("addressInput").value;
-              NgMap.getGeoLocation(value24).then(function(latlng) {
-                $scope.map.markers[0].setPosition(latlng);
-                $scope.map.setCenter(latlng);
-              });
-            };
+
+
+
+
+            var initMap = function(){
+              var marker;
+              var infowindow = new google.maps.InfoWindow();
+              var geocoder = new google.maps.Geocoder;
+
+                F.getLocation().then(function(myPosition){
+                    var latlng = new google.maps.LatLng(myPosition.latitude,myPosition.longitude);
+                    var myOptions = {
+                        zoom: 14,
+                        center: latlng,
+                        mapTypeId: google.maps.MapTypeId.TERRAIN
+                    };
+                    $scope.map = new google.maps.Map(document.getElementById('map'),myOptions);
+                    marker = new google.maps.Marker({
+                      draggable:true,
+                      map: $scope.map,
+                      position: latlng
+                    });
+
+                    geocodeLatLng(geocoder, $scope.map,latlng,marker,infowindow);
+                    setAutocomplete($scope.map,marker,infowindow);
+
+
+                    $scope.loading = false;
+                    google.maps.event.addListenerOnce($scope.map, 'idle', function() {
+                        google.maps.event.trigger($scope.map, 'resize');
+                        $scope.map.setCenter(latlng);
+                    });
+
+                    // Funcion para que actualize el marker y el infoView del marcador cuando se mueve, de igual forma actualiza el modelo AdressInput
+                    marker.addListener('dragend', function(event){
+                      geocodeLatLng(geocoder, $scope.map,event.latLng,marker,infowindow);
+                    });
+
+
+                });
+
+
+            }
+
+            //todo: pasar a un archivo mapa utils
+            // agrego el autocomplete y funcionalidad
+            var setAutocomplete= function(map,marker,infowindow){
+              var input = /** @type {!HTMLInputElement} */(
+                  document.getElementById('addressIn'));
+                  var optionsInput = {
+                    componentRestrictions: {country: 'mx'}
+                  };
+              var autocomplete = new google.maps.places.Autocomplete(input,optionsInput);
+
+                  autocomplete.addListener('place_changed', function() {
+                    infowindow.close();
+                    marker.setVisible(false);
+                    var place = autocomplete.getPlace();
+                    if (!place.geometry) {
+                      // LA BUSQUEDA FALLO
+                      window.alert("No details available for input: '" + place.name + "'");
+                      return;
+                    }
+
+                    if (place.geometry.viewport) {
+                      map.fitBounds(place.geometry.viewport);
+                    } else {
+                      map.setCenter(place.geometry.location);
+                    }
+
+                    marker.setPosition(place.geometry.location);
+                    marker.setVisible(true);
+                    var address = '';
+                    if (place.address_components) {
+                      address = [
+                        (place.address_components[0] && place.address_components[0].short_name || ''),
+                        (place.address_components[1] && place.address_components[1].short_name || ''),
+                        (place.address_components[2] && place.address_components[2].short_name || '')
+                      ].join(' ');
+                    }
+
+                    infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
+                    infowindow.open(map, marker);
+                  });
+            }
+
+
+            // todo:pasar a un mapa utils
+            // devuelve el detalle de la ubicacion por latitud y longitud
+            function geocodeLatLng(geocoder, map,latlng,marker,infowindow) {
+                  geocoder.geocode({'location': latlng}, function(results, status) {
+                    if (status === 'OK') {
+                      if (results[1]) {
+                        var detailUbicacion = results[0].formatted_address;
+                        $scope.addressInput=detailUbicacion;
+                        infowindow.setContent(detailUbicacion);
+                        infowindow.open(map, marker);
+
+                        // seteo la direccion a donator\
+                        $scope.donator.latitude = latlng.lat();
+                        $scope.donator.longitude = latlng.lng();
+                        $scope.$apply();
+                        return detailUbicacion;
+                      } else {
+                        window.alert('No results found');
+                      }
+                    } else {
+                      window.alert('Geocoder failed due to: ' + status);
+                    }
+                  });
+                }
 
             init();
         }
@@ -1549,14 +1648,12 @@ angular.module('app')
         "$http",
         "$sessionStorage",
         "AppF",
-        function($rootScope, $scope, $http, $sessionStorage, AppF) {
+        "$state",
+        "volunteerStates",
+        function($rootScope, $scope, $http, $sessionStorage, AppF, $state, volunteerStates) {
             $rootScope.F = AppF;
-            
-            var init = function() {
-                
-            }
-
-            init();
+            $rootScope.state = $state;
+            $rootScope.volunteerStates = volunteerStates;
         }
     ]);
 'use strict';
@@ -1688,10 +1785,9 @@ angular.module('app')
         "$q",
         "AppF",
         "$firebaseArray",
-        "NgMap",
         "$document",
         "geoDistanceFilter",
-        function($rootScope, $scope, $log, successAlertS, errAlertS, $firebaseAuth, $state, $q, F, $firebaseArray, NgMap, $document, geoDistanceFilter) {
+        function($rootScope, $scope, $log, successAlertS, errAlertS, $firebaseAuth, $state, $q, F, $firebaseArray, $document, geoDistanceFilter) {
             var initiated = false;
             $scope.volunteer = {};
             var root = firebase.database().ref('/');
@@ -1838,6 +1934,19 @@ angular.module('app')
                 } else {
                     init(F.user);
                 }
+            }
+        }
+    ]);
+'use strict';
+
+angular.module('app')
+    .directive('footPage', [
+        function(){
+            return {
+                restrict: 'E',
+                scope: true,
+                transclude: true,
+                templateUrl: 'partials/foot-page.html'
             }
         }
     ]);

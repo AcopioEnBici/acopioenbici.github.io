@@ -32,13 +32,16 @@
                 </tr>
             </thead>
             <tbody md-body>
-                <tr md-row ng-repeat="donation in (filteredItems = (donations | filter:search | orderBy:'date')) | limitTo: F.paginate: (currentPage - 1) * F.paginate" md-select='donation' md-select-id='$id' 
+                <tr md-row ng-repeat="donation in (filteredItems = (donations | filter:search | orderBy:'date')) | limitTo: F.paginate: (currentPage - 1) * F.paginate" md-select='donation' md-select-id='$id'
                     class="noright" ng-class="{'disabled': donation.pickedUp}">
-                    <td md-cell>{{donation.date | date: 'dd/MM/YYYY HH:mm'}}</td>
+                    <td md-cell>{{donation.createdAt | date: 'dd/MM/yyyy HH:mm'}}</td>
                     <td md-cell>{{donation.name}}</td>
                     <td md-cell>{{donation.categoryOfDonations}}</td>
                     <td md-cell>{{donation.sizeOfBag}}</td>
-                    <td md-cell>{{donation.contactInfo}}</td>
+                    <td md-cell>
+                      <span ng-if="donation.phone"> Tel:{{donation.phone}} |</span>
+                      <span ng-if="donation.email"> {{donation.email}}</span>
+                    </td>
                     <td md-cell>{{donation.pickedUp ? 'Si' : 'No'}}</td>
                     <th md-cell>
                         <md-button ng-show='!donation.pickedUp' class="md-primary md-mini md-fav" ng-click="pickup(donation)">
