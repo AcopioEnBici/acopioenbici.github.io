@@ -26,10 +26,10 @@
                             position="current"
                             animation="Animation.BOUNCE"
                             centered="true"></marker>
-                        <marker 
-                            on-click="selectDonation(donation, $index)" 
+                        <marker
+                            on-click="selectDonation(donation, $index)"
                             ng-repeat="donation in nearestDonations track by donation.$id"
-                            id="marker-donation-{{donation.$id}}" 
+                            id="marker-donation-{{donation.$id}}"
                             position="[{{donation.latitude}}, {{donation.longitude}}]"></marker>
                     </ng-map> -->
                     <div id="map" class="map" flex layout-fill></div>
@@ -41,7 +41,7 @@
                         Categoría: {{selectedDonation.categoryOfDonations}} <br>
                         Palabra secreta: {{selectedDonation.secretPassword}} <br>
                         Peso y tamaño de donación: {{selectedDonation.sizeOfBag}} <br>
-                        Horario de disponibilidad: {{selectedDonation.deliverSchedule}}
+                        Horario de disponibilidad: {{selectedDonation.deliverSchedule}}<br>
                         Esta en: {{selectedDonation.address}} <br>
                         Otras formas de contactarte con el donador:  <br>
                         <span ng-show="selectedDonation.email">email: {{selectedDonation.email}} <br></span>
