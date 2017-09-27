@@ -27,6 +27,7 @@
                     <th md-column md-order-by='categoryOfDonations'>Categoría</th>
                     <th md-column md-order-by='sizeOfBag'>Peso y Tamaño de la Donación</th>
                     <th md-column md-order-by='contactInfo'>Info de Contacto</th>
+                    <th md-column md-order-by='address'>Dirección</th>
                     <th md-column md-order-by='pickedUp'>Recogido</th>
                     <th md-column>Acciones</th>
                 </tr>
@@ -42,6 +43,7 @@
                       <span ng-if="donation.phone"> Tel:{{donation.phone}} |</span>
                       <span ng-if="donation.email"> {{donation.email}}</span>
                     </td>
+                    <td md-cell>{{donation.address}}</td>
                     <td md-cell>{{donation.pickedUp ? 'Si' : 'No'}}</td>
                     <th md-cell>
                         <md-button ng-show='!donation.pickedUp' class="md-primary md-mini md-fav" ng-click="pickup(donation)">
